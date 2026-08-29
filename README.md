@@ -1,4 +1,3 @@
-
 # Beat the Scammer
 
 **3027CCJ – ICT & The Justice System**
@@ -41,7 +40,7 @@ The final backend technology and audio implementation will be determined during 
 ## Project Structure
 
 ```text
-beat-the-scammer/
+3027CCJ-Project/
 │
 ├── client/
 │   ├── index.php

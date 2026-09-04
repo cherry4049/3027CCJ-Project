@@ -1,5 +1,8 @@
 <!-- Shared navigation menu used across the application pages. -->
 
-<nav class="main-nav">
-    <!-- Hamburger menu will be implemented during front-end development. -->
+<nav class="bottom-nav">
+    <!-- clicking home takes user bak to beginning of app -->
+    <a href="index.php">
+        Home 
+    </a>
 </nav>

@@ -1,50 +1,129 @@
-<!-- Instructions page for explaining how the training application works. -->
 <?php
 
-$pageTitle='Instructions';
+
+$pageTitle = 'Instructions';
 
 include 'includes/header.php';
+
 ?>
 
-<!--
-    INSTRUCTIONS SCREEN
+<section class="screen non-call-layout instructions-screen">
 
-    This screen explains how the game works before
-    the user starts the simulated scam.
--->
 
-<section class="screen">
-    <h2>How to Play</h2>
+    <!-- HEADING -->
 
-    <p>
-        You will recieve a simulated phone call.
-    </p>
+    <div class="non-call-title">
+        How This Training Works
+    </div>
 
-    <p>
-        Listen carefully to what the caller says.
-    </p>
 
-    <p>
-        At different points, you will need to decide how you would respond.
-    </p>
+    <!-- COACH-->
 
-    <div class="button-group">
-        <a
-            href="index.php"
-            class="button secondary-button"
+    <div class="coach-introduction">
+
+
+        <!-- Actual coach PNG -->
+
+        <img
+            src="assets/images/coach.png"
+            alt="Training coach"
+            class="coach-image"
         >
-            Back
-        </a>
+
+
+        <!-- Coach instructions -->
+
+        <div class="coach-text">
+
+            <strong>🔊</strong>
+
+            "Before we begin, I will explain
+            how this training works..."
+
+        </div>
+
+    </div>
+
+
+    <!-- AUDIO PLACEHOLDER -->
+    <!--
+        This will eventually link to an audio
+        file inside assets/audio/.
+    -->
+
+    <a
+        href="#"
+        class="audio-link"
+    >
+
+        ▶ Listen to instructions
+
+    </a>
+
+
+    <hr>
+
+
+    <!-- TRAINING RULES -->
+
+    <hr>
+
+    <h2>
+
+        During this training:
+
+    </h2>
+
+
+    <ul class="instructions-list">
+
+        <li>
+            ✓ Listen carefully
+        </li>
+
+        <li>
+            ✓ Think before you respond
+        </li>
+
+        <li>
+            ✓ Learn from feedback
+        </li>
+
+    </ul>
+
+    <!-- CONTINUE / EXIT BUTTONS -->
+
+    <div class="non-call-buttons">
+
+        <!-- CONTINUE-->
 
         <a
             href="incoming-call.php"
             class="button primary-button"
         >
+
+            <span class="button-icon">▶</span>
+
             Continue
+
+        </a>
+
+        <!--  EXIT-->
+
+        <a
+            href="index.php"
+            class="button secondary-button"
+        >
+
+            Exit
+
         </a>
     </div>
+
 </section>
 
 <?php
+
 include 'includes/footer.php';
+
 ?>

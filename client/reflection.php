@@ -1,5 +1,5 @@
-<!-- Feedback page for collecting or displaying user reflection after the scenario. -->
 <?php
+
 
 $pageTitle = 'Reflection';
 
@@ -7,59 +7,104 @@ include 'includes/header.php';
 
 ?>
 
-
-<section class="screen">
-
-    <h2>Reflection</h2>
+<section class="screen non-call-layout call-screen">
 
 
-    <p>
-        Think about the choices you made during
-        the phone call.
-    </p>
+    <!-- TRAINING LABEL-->
+
+    <div class="training-label">
+
+        Training Scenario
+
+    </div>
 
 
-    <p>
-        What warning signs did you notice?
-    </p>
+    <!--CALL ENDED-->
+
+    <div class="call-timer">
+
+        🔴 Call ended
+
+    </div>
 
 
-    <div class="button-group">
+    <!-- COACH QUESTION-->
+
+    <div class="message-bubble coach-message">
 
 
-        <!--
-            Back takes the user to the final decision.
-        -->
-        <a
-            href="scenario.php?decision=3"
-            class="button secondary-button"
-        >
-            Back
-        </a>
+        <div class="coach-introduction">
 
 
-        <!--
-            Continue takes the user to the
-            Feedback/Results screen.
+            <img
+                src="assets/images/coach.png"
+                alt="Training coach"
+                class="coach-image"
+            >
 
-            This is where they will eventually
-            see what they got right and wrong.
-        -->
+
+            <div class="coach-text">
+
+                <strong>
+                    Coach:
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <p>
+
+            "Let's reflect on the call.
+            Do you think this caller could be
+            an AI impersonation scam?"
+
+        </p>
+
+
+    </div>
+
+
+
+    <!-- COACH FEEDBACK PLACEHOLDER-->
+
+    <div class="message-bubble coach-message">
+
+        <strong>
+            🔊 Coach feedback:
+        </strong>
+
+        <p>
+
+            Your reflection feedback will
+            appear here.
+
+        </p>
+
+    </div>
+
+
+    <!-- FINAL RESULTS-->
+
+    <div class="non-call-buttons">
+
         <a
             href="feedback.php"
-            class="button primary-button"
+            class="call-continue-button"
         >
-            See My Results
+            🔄 Final results...
         </a>
 
     </div>
+
 
 </section>
 
 
 <?php
 
-// Load the shared footer.
 include 'includes/footer.php';
 
 ?>

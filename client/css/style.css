@@ -1,4 +1,4 @@
-
+/*1. BASIC RESET*/
 
 * {
     box-sizing: border-box;
@@ -11,324 +11,763 @@ body {
 }
 
 
-body {
-    font-family: Arial, sans-serif;
+/* 2. BODY*/
 
-    background: #222;
+body {
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #eeeeee;
+
+    color: #111111;
 
     min-height: 100vh;
+    min-height: 100dvh;
 }
 
 
+/* 3. PHONE APP CONTAINER*/
 
 /*
-    The app takes up the entire available
-    width on a phone.
+    Creates the phone-sized application area.
 
-    max-width: 430px means that when we view
-    it on a computer, it stays approximately
-    the width of a phone screen.
+    On a tablet or computer, the grey background around this
+    area makes it look like a phone screen.
+
+    On an actual phone, it will use the full width.
 */
 
+/* Mobile-first */
 .app {
     width: 100%;
-
-    max-width: 430px;
-
     min-height: 100vh;
-
+    min-height: 100dvh;
     margin: 0 auto;
 
-    background: white;
+    background: #ffffff;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+}
+
+/* 4. STATUS BAR */
+
+.status-bar {
+
+    height: 32px;
+
+    padding:
+        8px
+        18px
+        4px
+        18px;
 
     display: flex;
 
-    flex-direction: column;
+    justify-content: space-between;
+
+    align-items: center;
+
+    font-size: 11px;
+
+    font-weight: bold;
 }
 
-/*App Header for every screen*/
-
-.app-header {
-    padding: 18px;
-
-    text-align: center;
-
-    border-bottom: 1px solid #ddd;
-}
-
-
-.app-header h1 {
-    margin: 0;
-
-    font-size: 20px;
+.status-right {
+    font-size: 11px;
 }
 
 
-/*Main Content*/
+/* 5. MAIN CONTENT*/
 
 .app-content {
     flex: 1;
+    min-height: 0;
+    padding: 18px;
 
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
+
+    overflow-y: auto;
 }
 
 
-/*General Screen*/
+/* 6. GENERAL SCREEN*/
 
 .screen {
-    text-align: center;
 
-    padding: 20px 5px;
+    width: 100%;
+
+    text-align: left;
+
+    padding: 10px 4px;
 }
-
 
 .screen h2 {
-    margin-bottom: 20px;
-}
-
-
-.screen p {
-    line-height: 1.6;
-}
-
-
-/* HOME SCREEN /
-
-.home-icon {
-    font-size: 70px;
-
-    margin: 30px 0 20px;
-}
-
-
-/*INCOMING CALL SCREEN*/
-
-.phone-icon {
-    font-size: 70px;
-
-    margin: 30px 0 20px;
-}
-
-
-.caller-name {
-    font-weight: bold;
 
     font-size: 20px;
+
+    margin:
+        10px
+        0
+        20px;
+
+    text-align: center;
+}
+
+.screen p {
+
+    font-size: 16px;
+
+    line-height: 1.35;
+}
+
+/* NON-CALL SCREENS (used for all non-call screens */
+
+.non-call-layout {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+
+    text-align: left;
 }
 
 
-/*GENERAL BUTTONS */
+/* NON-CALL SCREEN TITLE */
+
+.non-call-title {
+    font-size: 1.375rem;
+
+    font-weight: bold;
+
+    text-align: center;    
+
+    margin:
+        0.625rem
+        0
+        1.5rem;
+}
+
+
+/* NON-CALL SCREEN HEADINGS */
+
+.non-call-layout h2 {
+    font-size: 1.2rem;
+
+    text-align: left;
+
+    margin:
+        0.1rem
+        0
+        0.15rem;
+}
+
+
+/* NON-CALL SCREEN BUTTON GROUP (control the common layout/position of the button group)*/
+
+.non-call-buttons {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 0.75rem;
+
+    margin-top: auto;
+}
+
+/* 7. HOME SCREEN*/
+
+.home-screen {
+
+    text-align: center;
+}
 
 /*
-    These styles are shared by buttons
-    throughout the application.
+    Actual logo PNG.
+
+    The image will be placed inside this area.
 */
 
+.home-logo {
+
+    width: clamp(120px, 35vw, 150px);
+
+    height: clamp(120px, 35vw, 150px);
+
+    margin:
+        15px
+        auto;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+.home-logo img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: contain;
+}
+
+
+/* 8. COACH*/
+
+.coach-introduction {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 1.5rem;
+
+    margin:
+        1rem
+        0.5rem
+        0.5rem;
+
+    text-align: left;
+}
+
+/*
+    Actual coach PNG.
+
+    object-fit keeps the image from being distorted.
+*/
+
+.coach-image {
+
+    width: 65px;
+
+    height: 65px;
+
+    object-fit: cover;
+
+    flex-shrink: 0;
+}
+
+.coach-text {
+
+    font-size: 15px;
+
+    line-height: 1.3;
+}
+
+/* 9. HOME BUTTONS */
+
+.home-screen .non-call-buttons {
+    flex-direction: column;
+}
+
 .button {
-    display: inline-block;
 
-    padding: 15px 25px;
+    display: inline-flex;
 
-    margin: 8px;
+    align-items: center;
 
-    border-radius: 10px;
+    justify-content: center;
+
+    min-height: 45px;
+
+    max-width: 100%;
+
+    padding:
+        10px
+        18px;
+
+    border: none;
+
+    border-radius: 9px;
 
     text-decoration: none;
 
-    font-size: 17px;
+    font-size: 16px;
 
-    text-align: center;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow:
+        0
+        2px
+        3px
+        rgba(0, 0, 0, 0.2);
+
+    margin: 5px;
 }
-
-
-/*
-    Main action button.
-
-    Examples:
-    Start
-    Continue
-    Answer Call
-    Finish
-*/
 
 .primary-button {
-    background: #333;
 
-    color: white;
+    background: #b9e7fa;
+
+    color: #111111;
 }
-
-
-/*
-    Secondary actions.
-
-    Example:
-    Back
-*/
 
 .secondary-button {
-    background: #ddd;
 
-    color: #222;
+    background: #b9e7fa;
+
+    color: #111111;
 }
 
+.button-icon {
 
-/*
-    Holds multiple buttons together.
-*/
+    margin-right: 7px;
+
+    font-size: 18px;
+}
+
+/* 10. BUTTON GROUP */
 
 .button-group {
+
     display: flex;
 
     justify-content: center;
 
+    align-items: center;
+
     flex-wrap: wrap;
 
-    margin-top: 25px;
+    margin-top: auto;
 }
 
+/* Instruction screen */
 
-/*SCENARIO / DECISION SCREEN*/
+/* 11. INSTRUCTIONS*/
 
+.instructions-list {
 
-/*
-    Shows the user which decision they
-    are currently completing.
-*/
+    list-style: none;
 
-.progress {
-    margin-bottom: 20px;
+    padding: 0 0.15rem;
 
-    font-weight: bold;
+    margin:
+        0.1rem
+        0;
+}
+
+.instructions-list li {
+
+    margin: 0.2rem 0.2rem;
 
     font-size: 16px;
 }
 
+/* 12. AUDIO*/
+
+.audio-link {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin: 0.15rem 1rem;
+
+    font-size: 1rem;
+
+    text-decoration: none;
+
+    color: #111111;
+}
+
+.instructions-screen .non-call-buttons {
+    flex-direction: row;
+}
+
+/*13. CALL SCREENS*/
 
 /*
-    Caller information box.
-
-    This is where the caller's dialogue
-    will eventually be displayed.
+    Blue → green → blue gradient from the mock-up.
 */
 
-.caller-box {
-    padding: 20px;
+/* Reusable call screen background for all simulated call screens */
+.training-screen {
+    flex: 1;
+
+    width: calc(100% + 36px);
+
+    margin-left: -18px;
+    margin-right: -18px;
+
+    padding: 18px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #91b8f5 0%,
+            #8ed1c1 55%,
+            #72aee7 100%
+        );
+}
+
+.call-screen {
+    display: flex;
+    flex-direction: column;
+}
+
+.back-to-instructions.button.primary-button {
+    display: block;
+
+    width: fit-content;
+    max-width: 100%;
+
+    margin: 10px auto 0;
+    padding: 12px 20px;
+
+    text-align: center;
+
+    background: #b9e7fa;
+    color: #111111;
+}
+
+/*14. TRAINING LABEL*/
+
+.training-label {
+
+    text-align: right;
+
+    font-size: 11px;
+
+    font-weight: bold;
 
     margin-bottom: 20px;
+}
 
-    background: #f5f5f5;
+/* incoming-call-content */
 
-    border-radius: 12px;
+.incoming-call {
+    flex: 1;
 
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+
+    padding-top: 35px;
+}
+
+.phone-number {
+
+    font-size: 18px;
+}
+
+/*
+    Large "slide to answer" button.
+*/
+
+.answer-button {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 215px;
+
+    min-height: 58px;
+
+    margin: 20vh auto 0;
+
+    border-radius: 35px;
+
+    background: #bcbcbc;
+    color: white;
+
+    text-decoration: none;
+    font-size: 17px;
+}
+
+/* scenario-screen */
+
+.scenario-screen {
+    display: flex;
+    flex-direction: column;
     text-align: left;
 }
 
+/*16. CALL TIMER*/
 
-/*
-    Placeholder phone icon inside
-    the caller box.
-*/
-
-.caller-icon {
-    font-size: 35px;
+.scenario-screen h2 {
+    text-align: left;
+    margin-top: 2.5rem;
 }
 
+.call-timer {
 
-/*
-    Contains the question and
-    response options.
-*/
+    width: 175px;
 
-.decision-box {
-    padding: 20px;
+    margin:
+        10px
+        auto
+        18px;
 
-    background: white;
+    padding:
+        8px
+        12px;
+
+    border-radius: 20px;
+
+    background: #000000;
+
+    color: white;
+
+    text-align: center;
+
+    font-size: 14px;}
+
+/*17. CONVERSATION BUBBLES*/
+
+.message-bubble {
+
+    padding: 0.5rem;
+
+    border-radius: 14px;
+
+    background: #f5f5f5;
+
+    font-size: 15px;
+
+    line-height: 1.3;
 }
 
+.message-bubble p {
 
-/*RESPONSE BUTTONS*/
+    margin:
+        8px
+        0
+        0;
+}
 
+.caller-message {
+
+    margin-right: 15px;
+}
+
+.user-message {
+
+    margin-left: 15px;
+}
+
+.coach-message {
+
+    margin:
+        0.5rem
+        0;
+}
+
+/*18. CONTINUE CALL*/
+
+.call-continue-button {
+
+    display: block;
+
+    width: 90%;
+
+    margin:
+        20px
+        auto;
+
+    padding: 10px;
+
+    border:
+        1px
+        solid
+        #111111;
+
+    border-radius: 20px;
+
+    background: #b8dcf5;
+
+    color: #111111;
+
+    text-align: center;
+
+    text-decoration: none;
+}
+
+/*19. DECISION SCREEN*/
 
 /*
-    Places each response underneath
-    the previous response.
+    This is the reusable Decision screen.
+
+    scenario.php?decision=1
+    scenario.php?decision=2
+    scenario.php?decision=3
+
+    all use this same design.
 */
+
+.scenario-screen {
+
+    min-height: 100%;
+    margin: -18px;
+    padding: 18px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #91b8f5 0%,
+            #8ed1c1 55%,
+            #72aee7 100%
+        );
+}
+
+/* 20. DECISION PROGRESS*/
+
+.progress {
+
+    text-align: center;
+
+    font-weight: bold;
+
+    margin-top: 1rem;
+
+    margin-bottom: 1rem;
+}
+
+/* 21. RESPONSE OPTIONS*/
 
 .response-buttons {
+
     display: flex;
 
     flex-direction: column;
 
-    gap: 15px;
+    gap: 14px;
 
-    margin-top: 20px;
+    margin-top: 0.5rem;
 }
 
-
-/*
-    Individual answer button.
-*/
-
 .response-button {
+
     display: block;
 
     width: 100%;
 
-    padding: 20px;
+    padding: 17px;
 
-    border: 2px solid #333;
+    border: none;
 
-    border-radius: 12px;
+    border-radius: 13px;
 
-    background: white;
+    background: #f5f5f5;
 
-    color: #222;
+    color: #111111;
 
     text-decoration: none;
 
-    font-size: 17px;
+    font-size: 16px;
 
-    line-height: 1.4;
+    font-weight: bold;
+
+    line-height: 1.3;
+
+    box-shadow:
+        0
+        1px
+        3px
+        rgba(0, 0, 0, 0.15);
 }
 
+/* 22. REFLECTION*/
 
-/*
-    Slight visual change when the user
-    hovers over a response on a computer.
+.reflection-box {
 
-    This does not affect phone functionality.
-*/
+    padding: 15px;
 
-.response-button:hover {
-    background: #eee;
+    border-radius: 14px;
+
+    background: #f5f5f5;
+
+    margin:
+        20px
+        0;
 }
 
+/* feedback screen */
 
-/* FEEDBACK / RESULT */
-
-
-/*
-    Holds all of the user's results.
-*/
-
-.results-box {
-    margin-top: 25px;
-
+.feedback-screen {
     text-align: left;
 }
 
+.feedback-screen .non-call-buttons {
+    flex-direction: row;
+}
 
-/*
-    Individual result for each decision.
+/* 23. FEEDBACK / RESULTS*/
 
-    Later these will show whether the user
-    was correct or incorrect.
-*/
+.results-box {
+
+    margin-top: 10px;
+}
 
 .result-item {
-    padding: 15px;
 
-    margin-top: 15px;
+    padding: 14px;
+
+    margin-top: 1rem;
+    margin-bottom: 1.25rem;
+
+    border-radius: 12px;
+
+    background: #f5f5f5;
+}
+
+
+.result-item h4 {
+
+    margin:
+        0
+        0
+        8px;
+}
+
+
+.result-correct {
+
+    border-left:
+        5px
+        solid
+        #39a96b;
+}
+
+.result-incorrect {
+
+    border-left:
+        5px
+        solid
+        #d9534f;
+}
+
+/* 24. PREVENTION TIPS*/
+
+.tip {
+
+    margin:
+        3px
+        0;
+
+    padding: 8px;
 
     background: #f5f5f5;
 
@@ -336,24 +775,198 @@ body {
 }
 
 
-.result-item h4 {
-    margin-top: 0;
+/* 25. larger screen */
+
+@media (min-width: 768px) {
+
+    body {
+        background: #eeeeee;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        min-height: 100dvh;
+    }
+
+    .app {
+        width: 390px;
+        height: 844px;
+
+        min-height: 0;
+
+        border-radius: 20px;
+
+        box-shadow:
+            0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+}
+
+/*  PHONE STATUS BAR*/
+
+.phone-status-bar {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    width: 100%;
+
+    height: 32px;
+
+    padding:
+        6px
+        18px;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    background: transparent;
+
 }
 
 
-/*FOOTER*/
+.phone-status-right {
 
-.app-footer {
-    padding: 15px;
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+}
+
+
+#battery-icon {
+
+    font-size: 12px;
+
+}
+
+/*  SWIPE TO ANSWER */
+
+/* ==================================================
+   SLIDE TO ANSWER
+   ================================================== */
+
+.swipe-container {
+
+    width: 100%;
+
+    margin-top: auto;
+    margin-bottom: 20px;
+
+    display: flex;
+    justify-content: center;
+
+}
+
+
+.swipe-track {
+
+    position: relative;
+
+    width: 100%;
+
+    height: 62px;
+
+    border-radius: 32px;
+
+    background: rgba(255, 255, 255, 0.55);
+
+    display: flex;
+
+    align-items: center;
+
+    margin-left: auto;
+
+    margin-right: auto;
+
+    overflow: hidden;
+
+}
+
+
+.swipe-handle {
+
+    position: absolute;
+
+    left: 4px;
+
+    top: 4px;
+
+    width: 54px;
+
+    height: 54px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 25px;
+
+    font-weight: bold;
+
+    cursor: grab;
+
+    user-select: none;
+
+    /*
+        VERY IMPORTANT:
+        stops the browser treating the movement
+        as page scrolling.
+    */
+
+    touch-action: none;
+
+    z-index: 10;
+
+}
+
+
+.swipe-text {
+
+    width: 100%;
 
     text-align: center;
 
-    border-top: 1px solid #ddd;
+    font-size: 15px;
 
-    font-size: 13px;
+    font-weight: bold;
+
+    pointer-events: none;
+
 }
 
 
-.app-footer p {
-    margin: 0;
+.back-to-instructions {
+
+    display: inline-block;
+
+    margin-top: 15px;
+
+    padding: 10px 18px;
+
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.6);
+
+    color: #111111;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
 }
+

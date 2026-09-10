@@ -1,4 +1,3 @@
-<!-- Incoming call screen for the scam-call simulation. -->
 <?php
 
 $pageTitle = 'Incoming Call';
@@ -7,50 +6,82 @@ include 'includes/header.php';
 
 ?>
 
-<section class="screen incoming-call-screen">
-    <div class="phone-icon">
-        📞
+<section class="screen call-screen">
+
+    <div class="training-label">
+        TRAINING SCENARIO
     </div>
 
-    <h2>Incoming Call</h2>
+    <div class="incoming-call">
 
-    <p class="caller-name">
-        Unknown Number
-    </p>
+        <div class="phone-icon">
+            ☎
+        </div>
 
-    <!--
-    Placeholder description.
+        <p class="incoming-text">
+            Incoming call
+        </p>
 
-    The actual scenario/caller information
-    can be added later.
-    -->
+        <h1>
+            Caller Name
+        </h1>
 
-    <p>
-        Someone is calling you claiming to be a family member.
-    </p>
+        <p class="phone-number">
+            04XX XXX XXX
+        </p>
 
-    <div class="button-group">
+
+        <!-- =========================================
+            SWIPE TO ANSWER
+            ========================================= -->
+
+        <div
+            class="swipe-container"
+            id="swipe-to-answer"
+        >
+
+            <div
+                class="swipe-track"
+                id="swipe-track"
+            >
+
+                <div
+                    class="swipe-handle"
+                    id="swipe-handle"
+                >
+                    →
+                </div>
+
+                <span class="swipe-text">
+                    Swipe to answer
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+            BACK TO INSTRUCTIONS
+            ========================================= -->
 
         <a
             href="instructions.php"
-            class="button secondary-button"
+            class="back-to-instructions"
         >
-            Back to Instructions
+            ← Back to Instructions
         </a>
 
-        <a
-            href="scenario.php?decision=1"
-            class="button primary-button"
-        >
-            Answer Call
-        </a>
     </div>
 
 </section>
+
+
+<script src="js/navigation.js"></script>
+
 
 <?php
 
 include 'includes/footer.php';
 
 ?>
-

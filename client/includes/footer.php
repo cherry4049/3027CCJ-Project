@@ -1,17 +1,20 @@
 <!-- Shared page footer and JavaScript imports. -->
 
-<!--
-    This closes the main content area that was opened
-    in header.php.
--->
+<?php
 
-</main>
+/*
+    FOOTER
 
-<footer class="app-footer">
-    <p>Beat the Scammer</p>
+    Closes the main application container
+    that was opened in header.php.
+*/
 
-</footer>
+?>
 
-</div>
+        </main>
+
+    </div>
+
 </body>
+
 </html>

@@ -1,118 +1,167 @@
 <?php
 
-$pageTitle = 'Your Results';
+
+
+$pageTitle = 'Final Results';
 
 include 'includes/header.php';
 
 ?>
 
-
-<!--
-    FEEDBACK / RESULTS SCREEN
-
-    This is AFTER Reflection.
-
-    Later this screen will automatically tell
-    the user which decisions they got right and wrong.
-
--->
-<section class="screen feedback-screen">
+<section class="screen">
 
 
-    <h2>Your Results</h2>
+    <!--HEADING-->
+
+    <h2>
+        Final Results & Tips
+    </h2>
 
 
-    <p>
-        Here's how you went during the scenario.
-    </p>
+    <!-- COACH-->
+
+    <div class="coach-introduction">
 
 
-    <section class="results-box">
+        <img
+            src="assets/images/coach.png"
+            alt="Training coach"
+            class="coach-image"
+        >
 
 
-        <!-- Overall score -->
-        <h3>Your Score</h3>
+        <div class="coach-text">
 
-        <p>
-            Your score will appear here.
-        </p>
-
-
-        <!--
-            DECISION 1 RESULT
-
-            Placeholder only.
-
-            Later this will automatically say
-            something like:
-
-                ✓ Correct
-                or
-                ✗ Incorrect
-        -->
-        <div class="result-item">
-
-            <h4>Decision 1</h4>
+            <strong>
+                🔊 Coach speaking:
+            </strong>
 
             <p>
-                ✓ / ✗ Your result will appear here.
+
+                "Well done! You have completed
+                this training scenario."
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- OVERALL FEEDBACK-->
+
+    <div class="results-box">
+
+
+        <h3>
+            What you did right
+        </h3>
+
+
+        <div class="result-item result-correct">
+
+            <h4>
+                ✓ Correct decision
+            </h4>
+
+            <p>
+
+                You recognised that the caller
+                was creating urgency and asking
+                for money.
+
             </p>
 
         </div>
 
 
-        <!-- Decision 2 result -->
-        <div class="result-item">
+        <h3>
+            What you could improve
+        </h3>
 
-            <h4>Decision 2</h4>
+
+        <div class="result-item result-incorrect">
+
+            <h4>
+                ✗ Needs improvement
+            </h4>
 
             <p>
-                ✓ / ✗ Your result will appear here.
+
+                Remember to verify the caller's
+                identity before taking action.
+
             </p>
 
         </div>
 
 
-        <!-- Decision 3 result -->
-        <div class="result-item">
-
-            <h4>Decision 3</h4>
-
-            <p>
-                ✓ / ✗ Your result will appear here.
-            </p>
-
-        </div>
-
-    </section>
+    </div>
 
 
-    <!--
-        NAVIGATION
+    <!-- REMEMBER-->
 
-        Back = Reflection
+    <h3>
+        Remember:
+    </h3>
 
-        Continue = Prevention Tips
-    -->
+
+    <div class="tip">
+
+        ✓ Stay calm.
+
+    </div>
+
+
+    <div class="tip">
+
+        ✓ Verify the caller's identity.
+
+    </div>
+
+
+    <div class="tip">
+
+        ✓ Never send money immediately.
+
+    </div>
+
+
+    <div class="tip">
+
+        ✓ Contact the person using a trusted
+        phone number.
+
+    </div>
+
+
+    <!-- RESTART / END -->
+
     <div class="button-group">
 
 
         <a
-            href="reflection.php"
-            class="button secondary-button"
+            href="index.php"
+            class="button primary-button"
         >
-            Back
+
+            ↻ Restart
+
         </a>
 
 
         <a
-            href="prevention-tips.php"
-            class="button primary-button"
+            href="index.php"
+            class="button secondary-button"
         >
-            Prevention Tips
+
+            ✕ End Training
+
         </a>
 
+
     </div>
+
 
 </section>
 

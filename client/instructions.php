@@ -1,6 +1,5 @@
 <?php
 
-
 $pageTitle = 'Instructions';
 
 include 'includes/header.php';
@@ -17,21 +16,15 @@ include 'includes/header.php';
     </h2>
 
 
-    <!-- COACH-->
+    <!-- COACH -->
 
     <div class="coach-introduction">
-
-
-        <!-- Actual coach PNG -->
 
         <img
             src="assets/images/coach.png"
             alt="Training coach"
             class="coach-image"
         >
-
-
-        <!-- Coach instructions -->
 
         <div class="coach-text">
 
@@ -46,25 +39,19 @@ include 'includes/header.php';
 
 
     <!-- AUDIO PLACEHOLDER -->
-    <!--
-        This will eventually link to an audio
-        file inside assets/audio/.
-    -->
 
     <a
         href="#"
         class="audio-link"
     >
-
         ▶ Listen to instructions
-
     </a>
 
 
     <hr>
 
 
-    <!-- TRAINING RULES -->
+    <!-- TRAINING EXPLANATION -->
 
     <h2
         style="
@@ -72,30 +59,68 @@ include 'includes/header.php';
             margin-top: 30px;
         "
     >
-
         During this training:
-
     </h2>
 
 
     <ul class="instructions-list">
 
         <li>
-            ✓ Listen carefully
+            ✓ Listen carefully to the caller
         </li>
 
         <li>
-            ✓ Think before you respond
+            ✓ Choose how you would respond
         </li>
 
         <li>
-            ✓ Learn from feedback
+            ✓ Think before taking action
+        </li>
+
+        <li>
+            ✓ Learn from your choices and feedback
         </li>
 
     </ul>
 
 
-    <!-- CONTINUE-->
+    <!-- FAMILY VOICE INFORMATION -->
+
+    <div class="message-bubble coach-message">
+
+        <div class="coach-text">
+
+            <strong>
+                Using a Family Member's Voice
+            </strong>
+
+            <p>
+                This training may also use the
+                voice of a participating family
+                member.
+            </p>
+
+            <p>
+                The scenario works in the same
+                way, but hearing a familiar voice
+                can make an impersonation attempt
+                feel more convincing.
+            </p>
+
+            <p>
+                Even when a caller sounds exactly
+                like someone you know, you should
+                still stop, think and independently
+                verify who you are speaking to.
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- CONTINUE -->
 
     <a
         href="incoming-call.php"
@@ -109,7 +134,7 @@ include 'includes/header.php';
     </a>
 
 
-    <!--  EXIT-->
+    <!-- EXIT -->
 
     <a
         href="index.php"

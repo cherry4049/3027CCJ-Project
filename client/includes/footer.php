@@ -14,7 +14,7 @@
         </main>
 
     </div>
-
+    <script src="/js/state.js"></script>
 </body>
 
 </html>

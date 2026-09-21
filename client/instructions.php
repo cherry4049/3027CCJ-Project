@@ -8,7 +8,6 @@ include 'includes/header.php';
 
 <section class="screen non-call-layout instructions-screen">
 
-
     <!-- HEADING -->
 
     <div class="non-call-title">
@@ -38,7 +37,7 @@ include 'includes/header.php';
     </div>
 
 
-    <!-- AUDIO PLACEHOLDER -->
+    <!-- AUDIO -->
 
     <a
         href="#"
@@ -53,12 +52,7 @@ include 'includes/header.php';
 
     <!-- TRAINING EXPLANATION -->
 
-    <h2
-        style="
-            text-align: left;
-            margin-top: 30px;
-        "
-    >
+    <h2>
         During this training:
     </h2>
 
@@ -83,9 +77,6 @@ include 'includes/header.php';
 
     </ul>
 
-    <!-- CONTINUE / EXIT BUTTONS -->
-
-    <div class="non-call-buttons">
 
     <!-- FAMILY VOICE INFORMATION -->
 
@@ -122,8 +113,11 @@ include 'includes/header.php';
     </div>
 
 
+    <!-- CONTINUE / EXIT BUTTONS -->
 
-    <!-- CONTINUE -->
+    <div class="non-call-buttons">
+
+        <!-- CONTINUE -->
 
         <a
             href="incoming-call.php"
@@ -134,10 +128,10 @@ include 'includes/header.php';
 
             Continue
 
-    </a>
+        </a>
 
 
-    <!-- EXIT -->
+        <!-- EXIT -->
 
         <a
             href="index.php"
@@ -147,6 +141,7 @@ include 'includes/header.php';
             Exit
 
         </a>
+
     </div>
 
 </section>

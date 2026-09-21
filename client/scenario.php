@@ -1412,8 +1412,6 @@ include 'includes/header.php';
 ?>
 
 
-<section class="screen scenario-screen">
-
 <section class="screen training-screen scenario-screen">
 
     <!-- TRAINING SCENARIO -->

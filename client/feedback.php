@@ -6,221 +6,224 @@ include 'includes/header.php';
 
 ?>
 
-<section class="screen call-screen">
+<section class="screen non-call-layout call-screen feedback-screen">
 
-    <div class="training-label">
-        Training Scenario
-    </div>
+    <div class="feedback-content">
+
+        <div class="training-label">
+            Training Scenario
+        </div>
 
 
-    <!-- COACH MESSAGE -->
+        <!-- COACH MESSAGE -->
 
-    <div class="message-bubble coach-message">
+        <div class="message-bubble coach-message">
 
-        <div class="coach-introduction">
+            <div class="coach-introduction">
 
-            <img
-                src="assets/images/coach.png"
-                alt="Training coach"
-                class="coach-image"
-            >
+                <img
+                    src="assets/images/coach.png"
+                    alt="Training coach"
+                    class="coach-image"
+                >
 
-            <div class="coach-text">
+                <div class="coach-text">
 
-                <strong>
-                    Coach:
-                </strong>
+                    <strong>
+                        Coach:
+                    </strong>
 
+                </div>
+
+            </div>
+
+            <p>
+                You've completed the scenario.
+                Let's look at how you responded
+                to the scam attempt.
+            </p>
+
+        </div>
+
+
+        <!-- OVERALL RESULT -->
+
+        <div class="feedback-section">
+
+            <h2>
+                Your Results
+            </h2>
+
+            <p id="overall-result">
+            </p>
+
+            <p id="result-counts">
+            </p>
+
+        </div>
+
+
+        <!-- DECISION BREAKDOWN -->
+
+        <div class="feedback-section">
+
+            <h2>
+                Decision Breakdown
+            </h2>
+
+            <p>
+                Review what happened during
+                each stage of the call and how
+                you responded.
+            </p>
+
+            <div id="decision-breakdown">
             </div>
 
         </div>
 
-        <p>
-            You've completed the scenario.
-            Let's look at how you responded
-            to the scam attempt.
-        </p>
 
-    </div>
+        <!-- REFLECTION RESULT -->
 
+        <div class="feedback-section">
 
-    <!-- OVERALL RESULT -->
+            <h2>
+                Your Reflection
+            </h2>
 
-    <div class="feedback-section">
+            <p id="reflection-summary">
+            </p>
 
-        <h2>
-            Your Results
-        </h2>
-
-        <p id="overall-result">
-        </p>
-
-        <p id="result-counts">
-        </p>
-
-    </div>
-
-
-    <!-- DECISION BREAKDOWN -->
-
-    <div class="feedback-section">
-
-        <h2>
-            Decision Breakdown
-        </h2>
-
-        <p>
-            Review what happened during
-            each stage of the call and how
-            you responded.
-        </p>
-
-        <div id="decision-breakdown">
         </div>
 
+
+        <!-- STRENGTHS -->
+
+        <div class="feedback-section">
+
+            <h2>
+                What You Did Well
+            </h2>
+
+            <p id="strength-feedback">
+            </p>
+
+        </div>
+
+
+        <!-- IMPROVEMENTS -->
+
+        <div class="feedback-section">
+
+            <h2>
+                What You Could Improve
+            </h2>
+
+            <p id="improvement-feedback">
+            </p>
+
+        </div>
+
+
+        <!-- WARNING SIGNS -->
+
+        <div class="feedback-section">
+
+            <h2>
+                Warning Signs in This Call
+            </h2>
+
+            <ul>
+
+                <li>
+                    The caller created urgency
+                    and pressured you to act
+                    immediately.
+                </li>
+
+                <li>
+                    The caller asked you to keep
+                    the situation private.
+                </li>
+
+                <li>
+                    The caller requested $800.
+                </li>
+
+                <li>
+                    The caller wanted money sent
+                    to unfamiliar or new account
+                    details.
+                </li>
+
+                <li>
+                    The caller discouraged you
+                    from contacting your daughter
+                    another way.
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <!-- TIPS -->
+
+        <div class="feedback-section">
+
+            <h2>
+                Remember
+            </h2>
+
+            <ul>
+
+                <li>
+                    Stay calm when someone
+                    contacts you with an urgent
+                    request.
+                </li>
+
+                <li>
+                    Verify the person's identity
+                    independently.
+                </li>
+
+                <li>
+                    Do not send money simply
+                    because the caller sounds
+                    familiar.
+                </li>
+
+                <li>
+                    Hang up and contact the
+                    person using a phone number
+                    or method you already trust.
+                </li>
+
+            </ul>
+
+        </div>
     </div>
 
+    <!-- BOTTOM BUTTONS -->
+    <div class="non-call-buttons">
 
-    <!-- REFLECTION RESULT -->
+        <a
+            href="incoming-call.php"
+            class="call-continue-button"
+            onclick="clearScenarioResults();"
+        >
+            Try Scenario Again
+        </a>
 
-    <div class="feedback-section">
-
-        <h2>
-            Your Reflection
-        </h2>
-
-        <p id="reflection-summary">
-        </p>
-
+        <a
+            href="index.php"
+            class="call-continue-button"
+            onclick="clearScenarioResults();"
+        >
+            Return Home
+        </a>
     </div>
-
-
-    <!-- STRENGTHS -->
-
-    <div class="feedback-section">
-
-        <h2>
-            What You Did Well
-        </h2>
-
-        <p id="strength-feedback">
-        </p>
-
-    </div>
-
-
-    <!-- IMPROVEMENTS -->
-
-    <div class="feedback-section">
-
-        <h2>
-            What You Could Improve
-        </h2>
-
-        <p id="improvement-feedback">
-        </p>
-
-    </div>
-
-
-    <!-- WARNING SIGNS -->
-
-    <div class="feedback-section">
-
-        <h2>
-            Warning Signs in This Call
-        </h2>
-
-        <ul>
-
-            <li>
-                The caller created urgency
-                and pressured you to act
-                immediately.
-            </li>
-
-            <li>
-                The caller asked you to keep
-                the situation private.
-            </li>
-
-            <li>
-                The caller requested $800.
-            </li>
-
-            <li>
-                The caller wanted money sent
-                to unfamiliar or new account
-                details.
-            </li>
-
-            <li>
-                The caller discouraged you
-                from contacting your daughter
-                another way.
-            </li>
-
-        </ul>
-
-    </div>
-
-
-    <!-- TIPS -->
-
-    <div class="feedback-section">
-
-        <h2>
-            Remember
-        </h2>
-
-        <ul>
-
-            <li>
-                Stay calm when someone
-                contacts you with an urgent
-                request.
-            </li>
-
-            <li>
-                Verify the person's identity
-                independently.
-            </li>
-
-            <li>
-                Do not send money simply
-                because the caller sounds
-                familiar.
-            </li>
-
-            <li>
-                Hang up and contact the
-                person using a phone number
-                or method you already trust.
-            </li>
-
-        </ul>
-
-    </div>
-
-
-    <!-- RESTART -->
-
-    <a
-        href="incoming-call.php"
-        class="call-continue-button"
-        onclick="clearScenarioResults();"
-    >
-        Try Scenario Again
-    </a>
-
-
-    <a
-        href="index.php"
-        class="call-continue-button"
-        onclick="clearScenarioResults();"
-    >
-        Return Home
-    </a>
 
 </section>
 

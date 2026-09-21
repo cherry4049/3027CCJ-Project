@@ -7,9 +7,7 @@ include 'includes/header.php';
 
 ?>
 
-
-<section class="screen call-screen">
-
+<section class="screen non-call-layout call-screen">
 
     <!-- TRAINING LABEL -->
 
@@ -151,19 +149,18 @@ include 'includes/header.php';
 
     <!-- CONTINUE TO FINAL RESULTS -->
 
-    <a
-        href="feedback.php"
-        class="call-continue-button"
-        id="final-results-button"
-        style="display: none;"
-    >
+    <div class="non-call-buttons">
 
-        Continue to Final Results
-
-    </a>
+        <a
+            href="feedback.php"
+            class="call-continue-button"
+            id="final-results-button"
+            style="display: none;"
+        >
+            Continue to Final Results
+        </a>
 
     </div>
-
 
 </section>
 

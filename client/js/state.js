@@ -371,7 +371,6 @@ function showDefaultBattery() {
 
 updateBatteryStatus();
 
-
 /*
     SCENARIO CALL TIMER
 
@@ -379,41 +378,24 @@ updateBatteryStatus();
     all scenario decision pages.
 */
 
-/*
-    SCENARIO CALL TIMER
-*/
-
 let callTimerInterval = null;
-
 
 function initialiseCallTimer() {
 
     const timerElement =
-        document.getElementById(
-            "call-timer"
-        );
-
-    /*
-        If this page does not have a
-        call timer, do nothing.
-    */
+        document.getElementById("call-timer");
 
     if (!timerElement) {
         return;
     }
 
-
     /*
-        Create the start time only once.
-
-        sessionStorage means the timer
-        continues between scenario pages.
+        Get the existing call start time.
+        If there is none, start the call now.
     */
 
     let startTime =
-        sessionStorage.getItem(
-            "callStartTime"
-        );
+        sessionStorage.getItem("callStartTime");
 
     if (!startTime) {
 
@@ -424,64 +406,54 @@ function initialiseCallTimer() {
             "callStartTime",
             startTime
         );
-
     }
 
-
     /*
-        Update the visible timer.
+        Update the timer display.
     */
 
     function updateTimer() {
 
         const elapsed =
-            Date.now() -
-            Number(startTime);
+            Date.now() - Number(startTime);
 
         const totalSeconds =
-            Math.floor(
-                elapsed / 1000
-            );
+            Math.floor(elapsed / 1000);
 
         const minutes =
-            Math.floor(
-                totalSeconds / 60
-            );
+            Math.floor(totalSeconds / 60);
 
         const seconds =
             totalSeconds % 60;
 
-
         const formattedMinutes =
-            String(minutes).padStart(
-                2,
-                "0"
-            );
+            String(minutes).padStart(2, "0");
 
         const formattedSeconds =
-            String(seconds).padStart(
-                2,
-                "0"
-            );
-
+            String(seconds).padStart(2, "0");
 
         timerElement.textContent =
             formattedMinutes +
             ":" +
             formattedSeconds;
-
     }
 
+    /*
+        Prevent duplicate intervals.
+    */
+
+    if (callTimerInterval !== null) {
+        clearInterval(callTimerInterval);
+    }
 
     /*
-        Show the initial value.
+        Show the timer immediately.
     */
 
     updateTimer();
 
-
     /*
-        Update every second.
+        Keep the timer running.
     */
 
     callTimerInterval =
@@ -489,17 +461,14 @@ function initialiseCallTimer() {
             updateTimer,
             1000
         );
-
 }
 
 
 /*
-    Start once the page has loaded.
+    Start the timer after the page loads.
 */
 
-if (
-    document.readyState === "loading"
-) {
+if (document.readyState === "loading") {
 
     document.addEventListener(
         "DOMContentLoaded",
@@ -512,95 +481,3 @@ else {
     initialiseCallTimer();
 
 }
-
-
-function updateCallTimer() {
-
-    const timerElement =
-        document.getElementById(
-            "call-timer"
-        );
-
-    /*
-        Only run on pages that actually
-        contain the call timer.
-    */
-
-    if (!timerElement) {
-        return;
-    }
-
-
-    let startTime =
-        sessionStorage.getItem(
-            "callStartTime"
-        );
-
-
-    /*
-        If there is no existing timer,
-        start one now.
-    */
-
-    if (!startTime) {
-
-        startCallTimer();
-
-        startTime =
-            sessionStorage.getItem(
-                "callStartTime"
-            );
-
-    }
-
-
-    const elapsedMilliseconds =
-        Date.now() -
-        Number(startTime);
-
-    const totalSeconds =
-        Math.floor(
-            elapsedMilliseconds / 1000
-        );
-
-    const minutes =
-        Math.floor(
-            totalSeconds / 60
-        );
-
-    const seconds =
-        totalSeconds % 60;
-
-
-    const formattedMinutes =
-        String(minutes).padStart(
-            2,
-            "0"
-        );
-
-    const formattedSeconds =
-        String(seconds).padStart(
-            2,
-            "0"
-        );
-
-
-    timerElement.textContent =
-        formattedMinutes +
-        ":" +
-        formattedSeconds;
-
-}
-
-
-/*
-    Update immediately and then
-    once every second.
-*/
-
-updateCallTimer();
-
-setInterval(
-    updateCallTimer,
-    1000
-);

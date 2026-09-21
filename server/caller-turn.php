@@ -71,7 +71,7 @@ try {
     bts_send(['ok' => false, 'error' => 'Unknown action: ' . $action], 400);
 
 } catch (InvalidArgumentException $e) {
-    .
+    
     bts_send(['ok' => false, 'error' => $e->getMessage()], 400);
 
 } catch (Throwable $e) {

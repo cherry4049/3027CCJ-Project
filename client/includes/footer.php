@@ -1,12 +1,20 @@
 <!-- Shared page footer and JavaScript imports. -->
 
-<footer>
-    <p>&copy; 3027CCJ Project - Beat the Scammer</p>
-</footer>
+<?php
 
-<script src="js/state.js"></script>
-<script src="js/navigation.js"></script>
-<script src="js/scenario.js"></script>
+/*
+    FOOTER
 
+    Closes the main application container
+    that was opened in header.php.
+*/
+
+?>
+
+        </main>
+
+    </div>
+    <script src="/js/state.js"></script>
 </body>
+
 </html>

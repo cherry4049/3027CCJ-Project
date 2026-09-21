@@ -85,14 +85,14 @@ include 'includes/header.php';
             later if required.
         -->
 
-        <a
-            href="instructions.php"
-            class="button secondary-button"
-        >
+    <a
+        href="family-voice.php"
+        class="button secondary-button"
+    >
 
             <span class="button-icon">ⓘ</span>
 
-            How It Works
+        Family Voice Training 
 
         </a>
 

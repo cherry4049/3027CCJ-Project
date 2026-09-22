@@ -12,9 +12,9 @@ include 'includes/header.php';
 
         <!-- HEADING -->
 
-        <h2>
+        <div class="non-call-title">
             Family Voice Training
-        </h2>
+        </div>
 
         <!-- COACH -->
 

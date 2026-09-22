@@ -1722,6 +1722,10 @@ include 'includes/header.php';
 
 </section>
 
+<!-- clear call timing before state.js loading from footer.php -->
+<script>
+    sessionStorage.removeItem("callStartTime");
+</script>
 
 <?php
 

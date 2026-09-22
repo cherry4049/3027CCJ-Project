@@ -21,8 +21,10 @@ function startScenario() {
     );
 
     sessionStorage.removeItem(
-    "callStartTime"
+        "callStartTime"
     );
+
+    initialiseCallTimer();
 }
 
 
@@ -465,19 +467,21 @@ function initialiseCallTimer() {
 
 
 /*
-    Start the timer after the page loads.
+    Start the timer automatically only when a scenario is active.
 */
 
-if (document.readyState === "loading") {
+if (document.querySelector(".call-timer")) {
+    if (document.readyState === "loading") {
 
-    document.addEventListener(
-        "DOMContentLoaded",
-        initialiseCallTimer
-    );
+        document.addEventListener(
+            "DOMContentLoaded",
+            initialiseCallTimer
+        );
 
-}
-else {
+    }
+    else {
 
-    initialiseCallTimer();
+        initialiseCallTimer();
 
+    }
 }

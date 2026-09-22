@@ -23,7 +23,7 @@ include 'includes/header.php';
 
     <!-- APP TITLE-->
 
-    <div class="non-call-title ">
+    <div class="non-call-title">
 
         AI Scam Awareness<br>
         Training Application

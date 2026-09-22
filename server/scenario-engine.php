@@ -140,12 +140,12 @@ function bts_respond($responseId)
     $response = $scenario['nodes'][$responseId];
     $nextNodeId = $response['nextNodeId'];
 
-    $rating = $response['isSafe'] ? 'SAFE' : 'UNSAFE';
+    $rating = $response['rating'];
+        
+    if ($rating === 'UNSAFE') {
+        $run['unsafeCount'] = $run['unsafeCount'] +1;
+    }    
     
-    if (!$response['isSafe']) {
-        $run['unsafeCount'] = $run['unsafeCount'] + 1;
-    }
-
     $reply = [
         'userText' => $response['text'],
         'coachFeedback' => $response['coachFeedback'],

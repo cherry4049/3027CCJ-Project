@@ -1,4 +1,4 @@
-const API_URL = '../server/caller-turn.php';
+const API_URL = '/api/caller-turn.php';
 
 async function apiRequest(action, data = {}) {
     const params = new URLSearchParams({
@@ -131,5 +131,6 @@ function getCurrentDecision() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
+    startScenario();
     startServerScenario();
 });

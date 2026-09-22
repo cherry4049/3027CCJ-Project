@@ -112,6 +112,7 @@ function bts_start($scenarioId = '')
         'currentNodeId' => $scenario['startNodeId'],
         'unsafeCount' => 0,
         'reflection' => null,
+        'decisions' => [],
     ];
 
     return [
@@ -141,10 +142,24 @@ function bts_respond($responseId)
     $nextNodeId = $response['nextNodeId'];
 
     $rating = $response['rating'];
-        
+
     if ($rating === 'UNSAFE') {
-        $run['unsafeCount'] = $run['unsafeCount'] +1;
-    }    
+        $run['unsafeCount'] = $run['unsafeCount'] + 1;
+    }
+
+    /*
+        Save this decision for the final results.
+    */
+
+    $decisionNumber = count($run['decisions']) + 1;
+
+    $run['decisions'][] = [
+        'decision' => $decisionNumber,
+        'caller' => $currentTurn['text'],
+        'response' => $response['text'],
+        'choice' => $rating,
+        'feedback' => $response['coachFeedback'],
+    ];
     
     $reply = [
         'userText' => $response['text'],
@@ -233,22 +248,175 @@ function bts_result()
     }
 
     $scenario = bts_get_scenario($run['scenarioId']);
-    $outcome = $run['unsafeCount'] > 0 ? 'unsafe' : 'safe';
-    $feedback = $scenario['feedback'][$outcome];
+
+    $outcome =
+        $run['unsafeCount'] > 0
+            ? 'unsafe'
+            : 'safe';
+
+    $feedback =
+        $scenario['feedback'][$outcome];
+
+
+    /*
+        Count response types.
+    */
+
+    $safeChoices = 0;
+    $unsureChoices = 0;
+    $unsafeChoices = 0;
+
+
+    foreach ($run['decisions'] as $decision) {
+
+        if ($decision['choice'] === 'SAFE') {
+            $safeChoices++;
+        }
+        elseif ($decision['choice'] === 'UNSURE') {
+            $unsureChoices++;
+        }
+        elseif ($decision['choice'] === 'UNSAFE') {
+            $unsafeChoices++;
+        }
+
+    }
+
+
+    /*
+        Overall result.
+    */
+
+    if (
+        $unsafeChoices === 0 &&
+        $unsureChoices <= 2
+    ) {
+
+        $overallResult =
+            'Strong scam awareness. You regularly used safer responses and avoided the highest-risk actions.';
+
+    }
+    elseif ($unsafeChoices <= 2) {
+
+        $overallResult =
+            "You recognised several warning signs, but there were some points where the caller's pressure influenced your decisions.";
+
+    }
+    else {
+
+        $overallResult =
+            "There were several points where the scammer's tactics influenced your decisions. Reviewing these choices can help you recognise similar scams in the future.";
+
+    }
+
+
+    /*
+        Strength feedback.
+    */
+
+    if ($safeChoices >= 6) {
+
+        $strengthFeedback =
+            'You frequently slowed the conversation down, questioned unusual requests and used verification strategies before taking action.';
+
+    }
+    elseif ($safeChoices >= 3) {
+
+        $strengthFeedback =
+            'You recognised several suspicious parts of the call and made some strong attempts to verify what was happening.';
+
+    }
+    else {
+
+        $strengthFeedback =
+            'You made some safer choices during the call. Building a habit of independently verifying urgent requests will make these responses stronger.';
+
+    }
+
+
+    /*
+        Improvement feedback.
+    */
+
+    if ($unsafeChoices === 0) {
+
+        $improvementFeedback =
+            'You avoided the highest-risk responses. Continue using independent verification whenever someone unexpectedly asks for money or personal information.';
+
+    }
+    elseif ($unsafeChoices <= 2) {
+
+        $improvementFeedback =
+            "At some points you were willing to trust the caller or continue following their instructions. Try to stop the interaction and verify the person independently before continuing.";
+
+    }
+    else {
+
+        $improvementFeedback =
+            'Several responses allowed urgency, emotional pressure or familiarity to influence your decisions. In a real situation, stop before sending money and contact the person using details you already trust.';
+
+    }
+
+
+    /*
+        Reflection feedback.
+    */
+
+    $reflectionSummary = '';
+
+    if ($run['reflection'] === 'yes') {
+
+        $reflectionSummary =
+            'You correctly identified the call as an AI impersonation scam.';
+
+    }
+    elseif ($run['reflection'] === 'notsure') {
+
+        $reflectionSummary =
+            'You were unsure whether the caller was genuine. The call was an AI impersonation scam.';
+
+    }
+    elseif ($run['reflection'] === 'no') {
+
+        $reflectionSummary =
+            'You believed the caller was really your daughter. The call was actually an AI impersonation scam.';
+
+    }
+    else {
+
+        $reflectionSummary =
+            'No reflection answer was recorded.';
+
+    }
+
 
     return [
         'scenarioId' => $run['scenarioId'],
         'title' => $scenario['title'],
+
         'outcome' => $outcome,
-        'unsafeResponses' => $run['unsafeCount'],
+
+        'safeResponses' => $safeChoices,
+        'unsureResponses' => $unsureChoices,
+        'unsafeResponses' => $unsafeChoices,
+
+        'overallResult' => $overallResult,
+
+        'strengthFeedback' => $strengthFeedback,
+
+        'improvementFeedback' => $improvementFeedback,
+
         'reflection' => $run['reflection'],
+        'reflectionSummary' => $reflectionSummary,
+
+        'decisions' => $run['decisions'],
+
         'text' => $feedback['text'],
         'audioUrl' => bts_audio_url($feedback['audioFile']),
+
         'warningSigns' => $feedback['warningSigns'],
         'reminders' => $feedback['reminders'],
     ];
 }
-
 
 function bts_reset()
 {

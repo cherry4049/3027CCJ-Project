@@ -470,11 +470,29 @@ function initialiseCallTimer() {
     Start the timer after the page loads.
 */
 
-if (document.readyState === "loading") {
+if (
+    document.readyState === "loading"
+) {
 
     document.addEventListener(
         "DOMContentLoaded",
-        initialiseCallTimer
+        function () {
+
+            if (
+                document.querySelector(
+                    ".scenario-screen"
+                )
+            ) {
+
+                sessionStorage.removeItem(
+                    "callStartTime"
+                );
+
+            }
+
+            initialiseCallTimer();
+
+        }
     );
 
 }

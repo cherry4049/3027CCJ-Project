@@ -878,6 +878,29 @@ feedback screen. Only .feedback-content scrolls.
     background: #f5f5f5;
 }
 
+.result-count-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.result-count-line strong {
+    font-size: 1.1rem;
+}
+
+.count-safe {
+    color: green;
+}
+
+.count-cautious {
+    color: rgb(38, 0, 255);
+}
+
+.count-risky {
+    color: red;
+}
+
 .result-item h4 {
     margin:
         0

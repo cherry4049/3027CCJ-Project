@@ -1,6 +1,5 @@
 <?php
 
-
 $pageTitle = 'Reflection';
 
 include 'includes/header.php';
@@ -12,18 +11,14 @@ include 'includes/header.php';
     <!-- TRAINING LABEL -->
 
     <div class="training-label">
-
         Training Scenario
-
     </div>
 
 
     <!-- CALL ENDED -->
 
     <div class="call-timer">
-
         🔴 Call ended
-
     </div>
 
 
@@ -31,16 +26,13 @@ include 'includes/header.php';
 
     <div class="message-bubble coach-message">
 
-
         <div class="coach-introduction">
-
 
             <img
                 src="assets/images/coach.png"
                 alt="Training coach"
                 class="coach-image"
             >
-
 
             <div class="coach-text">
 
@@ -50,18 +42,11 @@ include 'includes/header.php';
 
             </div>
 
-
         </div>
 
-
-        <p>
-
-            "Let's reflect on the call.
-            Do you think this caller could be
-            an AI impersonation scam?"
-
+        <p id="reflection-question">
+            Loading reflection question...
         </p>
-
 
     </div>
 
@@ -73,39 +58,29 @@ include 'includes/header.php';
         id="reflection-options"
     >
 
-
         <button
             type="button"
             class="response-button"
-            onclick="showReflection('YES')"
+            onclick="submitReflection('yes')"
         >
-
             Yes, I think it was an AI impersonation scam.
-
         </button>
-
 
         <button
             type="button"
             class="response-button"
-            onclick="showReflection('UNSURE')"
+            onclick="submitReflection('notsure')"
         >
-
             I'm not sure. Some parts of the call seemed suspicious.
-
         </button>
-
 
         <button
             type="button"
             class="response-button"
-            onclick="showReflection('NO')"
+            onclick="submitReflection('no')"
         >
-
             No, I think the caller was really my daughter.
-
         </button>
-
 
     </div>
 
@@ -118,16 +93,13 @@ include 'includes/header.php';
         style="display: none;"
     >
 
-
         <div class="coach-introduction">
-
 
             <img
                 src="assets/images/coach.png"
                 alt="Training coach"
                 class="coach-image"
             >
-
 
             <div class="coach-text">
 
@@ -137,12 +109,9 @@ include 'includes/header.php';
 
             </div>
 
-
         </div>
 
-
         <p id="reflection-result-text"></p>
-
 
     </div>
 
@@ -167,99 +136,200 @@ include 'includes/header.php';
 
 <script>
 
-
-function showReflection(answer) {
-
-
-    /*
-        Save the player's answer.
-
-        feedback.php can read this later
-        when creating the final breakdown.
-    */
-
-    sessionStorage.setItem(
-        "reflectionAnswer",
-        answer
-    );
+const REFLECTION_API = '/api/caller-turn.php';
 
 
-    /*
-        Create the immediate response.
+/*
+    LOAD REFLECTION QUESTION
+*/
 
-        Detailed feedback about the player's
-        decisions will be shown on feedback.php.
-    */
+async function loadReflectionQuestion() {
 
-    let resultText = "";
+    try {
 
+        const response = await fetch(
+            `${REFLECTION_API}?action=reflection`
+        );
 
-    if (answer === "YES") {
+        if (!response.ok) {
+            throw new Error(
+                `Server returned ${response.status}`
+            );
+        }
 
-        resultText =
-            "Correct! This call was an AI impersonation scam.";
+        const result = await response.json();
 
-    }
+        if (!result.ok) {
+            throw new Error(
+                result.error || 'Unable to load reflection.'
+            );
+        }
 
-
-    else if (answer === "UNSURE") {
-
-        resultText =
-            "This call was an AI impersonation scam. " +
-            "The caller was not really your daughter.";
+        document.getElementById(
+            'reflection-question'
+        ).textContent = result.question;
 
     }
+    catch (error) {
 
+        console.error(
+            'Reflection question error:',
+            error
+        );
 
-    else {
-
-        resultText =
-            "This call was an AI impersonation scam. " +
-            "The caller was impersonating your daughter.";
+        document.getElementById(
+            'reflection-question'
+        ).textContent =
+            'Let\'s reflect on the call. Do you think this caller could be an AI impersonation scam?';
 
     }
-
-
-    /*
-        Put the result onto the page.
-    */
-
-    document.getElementById(
-        "reflection-result-text"
-    ).textContent = resultText;
-
-
-    /*
-        Hide the response options after
-        the player has answered.
-    */
-
-    document.getElementById(
-        "reflection-options"
-    ).style.display = "none";
-
-
-    /*
-        Show the result.
-    */
-
-    document.getElementById(
-        "reflection-result"
-    ).style.display = "block";
-
-
-    /*
-        Show the button that takes the
-        player to their detailed results.
-    */
-
-    document.getElementById(
-        "final-results-button"
-    ).style.display = "block";
-
 
 }
 
+
+/*
+    SUBMIT REFLECTION ANSWER
+*/
+
+async function submitReflection(optionId) {
+
+    const options =
+        document.getElementById(
+            'reflection-options'
+        );
+
+    const resultBox =
+        document.getElementById(
+            'reflection-result'
+        );
+
+    const resultText =
+        document.getElementById(
+            'reflection-result-text'
+        );
+
+    const finalResultsButton =
+        document.getElementById(
+            'final-results-button'
+        );
+
+
+    try {
+
+        /*
+            Prevent multiple submissions.
+        */
+
+        options.style.display = 'none';
+
+
+        const response = await fetch(
+            `${REFLECTION_API}?action=reflect&optionId=${encodeURIComponent(optionId)}`
+        );
+
+
+        if (!response.ok) {
+            throw new Error(
+                `Server returned ${response.status}`
+            );
+        }
+
+
+        const result = await response.json();
+
+
+        if (!result.ok) {
+            throw new Error(
+                result.error || 'Unable to submit reflection.'
+            );
+        }
+
+
+        /*
+            Save the reflection locally as well.
+        */
+
+        sessionStorage.setItem(
+            'reflectionAnswer',
+            optionId
+        );
+
+
+        /*
+            Display server feedback.
+        */
+
+        resultText.textContent =
+            result.feedback;
+
+
+        resultBox.style.display =
+            'block';
+
+
+        /*
+            Play reflection audio if available.
+        */
+
+        if (result.audioUrl) {
+
+            const audio =
+                new Audio(result.audioUrl);
+
+            audio.play().catch(function(error) {
+
+                console.warn(
+                    'Reflection audio could not autoplay:',
+                    error
+                );
+
+            });
+
+        }
+
+
+        /*
+            Show final results button.
+        */
+
+        finalResultsButton.style.display =
+            'block';
+
+    }
+    catch (error) {
+
+        console.error(
+            'Reflection error:',
+            error
+        );
+
+
+        /*
+            Allow the user to try again
+            if the API request failed.
+        */
+
+        options.style.display =
+            'flex';
+
+
+        alert(
+            'Unable to submit your reflection. Please try again.'
+        );
+
+    }
+
+}
+
+
+/*
+    Load the question when the page opens.
+*/
+
+document.addEventListener(
+    'DOMContentLoaded',
+    loadReflectionQuestion
+);
 
 </script>
 

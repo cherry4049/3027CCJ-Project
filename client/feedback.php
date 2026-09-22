@@ -37,10 +37,8 @@ include 'includes/header.php';
 
             </div>
 
-            <p>
-                You've completed the scenario.
-                Let's look at how you responded
-                to the scam attempt.
+            <p id="feedback-intro">
+                Loading your results...
             </p>
 
         </div>
@@ -55,10 +53,12 @@ include 'includes/header.php';
             </h2>
 
             <p id="overall-result">
+                Loading overall result...
             </p>
 
-            <p id="result-counts">
-            </p>
+            <div id="result-counts">
+                Loading...
+            </div>
 
         </div>
 
@@ -78,6 +78,7 @@ include 'includes/header.php';
             </p>
 
             <div id="decision-breakdown">
+                Loading decisions...
             </div>
 
         </div>
@@ -92,6 +93,7 @@ include 'includes/header.php';
             </h2>
 
             <p id="reflection-summary">
+                Loading...
             </p>
 
         </div>
@@ -106,6 +108,7 @@ include 'includes/header.php';
             </h2>
 
             <p id="strength-feedback">
+                Loading...
             </p>
 
         </div>
@@ -120,6 +123,7 @@ include 'includes/header.php';
             </h2>
 
             <p id="improvement-feedback">
+                Loading...
             </p>
 
         </div>
@@ -133,33 +137,10 @@ include 'includes/header.php';
                 Warning Signs in This Call
             </h2>
 
-            <ul>
+            <ul id="warning-signs">
 
                 <li>
-                    The caller created urgency
-                    and pressured you to act
-                    immediately.
-                </li>
-
-                <li>
-                    The caller asked you to keep
-                    the situation private.
-                </li>
-
-                <li>
-                    The caller requested $800.
-                </li>
-
-                <li>
-                    The caller wanted money sent
-                    to unfamiliar or new account
-                    details.
-                </li>
-
-                <li>
-                    The caller discouraged you
-                    from contacting your daughter
-                    another way.
+                    Loading...
                 </li>
 
             </ul>
@@ -175,37 +156,21 @@ include 'includes/header.php';
                 Remember
             </h2>
 
-            <ul>
+            <ul id="reminders">
 
                 <li>
-                    Stay calm when someone
-                    contacts you with an urgent
-                    request.
-                </li>
-
-                <li>
-                    Verify the person's identity
-                    independently.
-                </li>
-
-                <li>
-                    Do not send money simply
-                    because the caller sounds
-                    familiar.
-                </li>
-
-                <li>
-                    Hang up and contact the
-                    person using a phone number
-                    or method you already trust.
+                    Loading...
                 </li>
 
             </ul>
 
         </div>
+
     </div>
 
+
     <!-- BOTTOM BUTTONS -->
+
     <div class="non-call-buttons">
 
         <a
@@ -223,6 +188,7 @@ include 'includes/header.php';
         >
             Return Home
         </a>
+
     </div>
 
 </section>
@@ -230,468 +196,460 @@ include 'includes/header.php';
 
 <script>
 
-/*
-    GET SAVED RESULTS
-*/
-
-const choices = JSON.parse(
-    sessionStorage.getItem(
-        "scenarioChoices"
-    )
-) || [];
-
-const reflectionAnswer =
-    sessionStorage.getItem(
-        "reflectionAnswer"
-    );
+const RESULTS_API =
+    '/api/caller-turn.php';
 
 
 /*
-    COUNT RESPONSE TYPES
+    LOAD FINAL RESULTS
 */
 
-const safeChoices =
-    choices.filter(
-        item =>
-            item.choice === "SAFE"
-    ).length;
+async function loadResults() {
 
-const unsureChoices =
-    choices.filter(
-        item =>
-            item.choice === "UNSURE"
-    ).length;
+    try {
 
-const unsafeChoices =
-    choices.filter(
-        item =>
-            item.choice === "UNSAFE"
-    ).length;
+        const response =
+            await fetch(
+                `${RESULTS_API}?action=result`
+            );
 
+        const result =
+            await response.json();
 
-/*
-    OVERALL RESULT
-*/
-
-const overallResult =
-    document.getElementById(
-        "overall-result"
-    );
-
-if (
-    unsafeChoices === 0 &&
-    unsureChoices <= 2
-) {
-
-    overallResult.textContent =
-        "Strong scam awareness. You regularly used safer responses and avoided the highest-risk actions.";
-
-}
-else if (
-    unsafeChoices <= 2
-) {
-
-    overallResult.textContent =
-        "You recognised several warning signs, but there were some points where the caller's pressure influenced your decisions.";
-
-}
-else {
-
-    overallResult.textContent =
-        "There were several points where the scammer's tactics influenced your decisions. Reviewing these choices can help you recognise similar scams in the future.";
-
-}
-
-
-/*
-    RESULT COUNTS
-*/
-
-document.getElementById(
-    "result-counts"
-).textContent =
-    "Safe responses: " +
-    safeChoices +
-    " | Cautious responses: " +
-    unsureChoices +
-    " | Risky responses: " +
-    unsafeChoices;
-
-
-/*
-    INDIVIDUAL DECISION BREAKDOWN
-*/
-
-const breakdown =
-    document.getElementById(
-        "decision-breakdown"
-    );
-
-
-choices.forEach(function(item) {
-
-    const decisionItem =
-        document.createElement("div");
-
-    decisionItem.classList.add(
-        "result-item"
-    );
-
-
-    /*
-        Determine symbol and rating text.
-    */
-
-    let symbol = "";
-    let description = "";
-
-
-    if (item.choice === "SAFE") {
-
-        symbol = "✓";
-
-        description =
-            "Safe response";
-
-        decisionItem.classList.add(
-            "result-correct"
-        );
-
-    }
-    else if (
-        item.choice === "UNSURE"
-    ) {
-
-        symbol = "?";
-
-        description =
-            "Cautious, but could be safer";
-
-    }
-    else {
-
-        symbol = "✗";
-
-        description =
-            "Risky response";
-
-        decisionItem.classList.add(
-            "result-incorrect"
-        );
-
-    }
-
-
-    /*
-        DECISION HEADING
-    */
-
-    const heading =
-        document.createElement("h3");
-
-    heading.textContent =
-        symbol +
-        " Decision " +
-        item.decision;
-
-
-    /*
-        CALLER DIALOGUE / QUESTION
-    */
-
-    const question =
-        document.createElement("p");
-
-    question.classList.add(
-        "decision-question"
-    );
-
-    if (item.caller) {
-
-        question.textContent =
-            '"' +
-            item.caller +
-            '"';
-
-    } else {
-
-        question.textContent =
-            "Caller dialogue unavailable.";
-
-    }
-
-
-    /*
-        SAFETY RATING
-    */
-
-    const ratingText =
-        document.createElement("p");
-
-    const ratingStrong =
-        document.createElement("strong");
-
-    ratingStrong.textContent =
-        description;
-
-    ratingText.appendChild(
-        ratingStrong
-    );
-
-
-    /*
-        USER RESPONSE
-    */
-
-    const response =
-        document.createElement("p");
-
-    const responseLabel =
-        document.createElement(
-            "strong"
-        );
-
-    responseLabel.textContent =
-        "You chose: ";
-
-    response.appendChild(
-        responseLabel
-    );
-
-    response.appendChild(
-        document.createTextNode(
-            '"' +
-            item.response +
-            '"'
-        )
-    );
-
-
-    /*
-        FEEDBACK
-    */
-
-    const feedback =
-        document.createElement("p");
-
-    const feedbackLabel =
-        document.createElement(
-            "strong"
-        );
-
-    feedbackLabel.textContent =
-        "Why: ";
-
-    feedback.appendChild(
-        feedbackLabel
-    );
-
-
-    /*
-        Fallback feedback in case an older
-        stored result does not contain
-        personalised feedback.
-    */
-
-    let feedbackText =
-        item.feedback;
-
-
-    if (!feedbackText) {
 
         if (
-            item.choice === "SAFE"
+            !response.ok ||
+            !result.ok
         ) {
 
-            feedbackText =
-                "This was a safer response because you slowed down the interaction and avoided immediately following the caller's instructions.";
+            throw new Error(
+                result.error ||
+                'Unable to load results.'
+            );
 
         }
-        else if (
-            item.choice === "UNSURE"
-        ) {
 
-            feedbackText =
-                "You showed some caution, but there were safer ways to verify the caller before continuing the conversation.";
 
-        }
-        else {
+        /*
+            COACH INTRODUCTION
+        */
 
-            feedbackText =
-                "This response increased your risk because you continued following the caller's instructions without independently verifying their identity.";
+        document.getElementById(
+            'feedback-intro'
+        ).textContent =
+            result.text;
+
+
+        /*
+            OVERALL RESULT
+        */
+
+        document.getElementById(
+            'overall-result'
+        ).textContent =
+            result.overallResult;
+
+
+        /*
+            RESPONSE COUNTS
+        */
+
+        document.getElementById(
+            'result-counts'
+        ).innerHTML =
+
+            '<div class="result-count-line">' +
+
+                '<span>Safe responses:</span> ' +
+
+                '<strong class="count-safe">' +
+                    result.safeResponses +
+                '</strong>' +
+
+            '</div>' +
+
+            '<div class="result-count-line">' +
+
+                '<span>Cautious responses:</span> ' +
+
+                '<strong class="count-cautious">' +
+                    result.unsureResponses +
+                '</strong>' +
+
+            '</div>' +
+
+            '<div class="result-count-line">' +
+
+                '<span>Risky responses:</span> ' +
+
+                '<strong class="count-risky">' +
+                    result.unsafeResponses +
+                '</strong>' +
+
+            '</div>';
+
+
+        /*
+            DECISION BREAKDOWN
+        */
+
+        const breakdown =
+            document.getElementById(
+                'decision-breakdown'
+            );
+
+        breakdown.innerHTML = '';
+
+
+        result.decisions.forEach(
+            function(item) {
+
+                const decisionItem =
+                    document.createElement(
+                        'div'
+                    );
+
+
+                decisionItem.classList.add(
+                    'result-item'
+                );
+
+
+                /*
+                    Determine symbol
+                    and rating text.
+                */
+
+                let symbol = '';
+                let description = '';
+
+
+                if (
+                    item.choice === 'SAFE'
+                ) {
+
+                    symbol = '✓';
+
+                    description =
+                        'Safe response';
+
+                    decisionItem.classList.add(
+                        'result-correct'
+                    );
+
+                }
+                else if (
+                    item.choice === 'UNSURE'
+                ) {
+
+                    symbol = '?';
+
+                    description =
+                        'Cautious, but could be safer';
+
+                }
+                else {
+
+                    symbol = '✗';
+
+                    description =
+                        'Risky response';
+
+                    decisionItem.classList.add(
+                        'result-incorrect'
+                    );
+
+                }
+
+
+                /*
+                    DECISION HEADING
+                */
+
+                const heading =
+                    document.createElement(
+                        'h3'
+                    );
+
+                heading.textContent =
+                    symbol +
+                    ' Decision ' +
+                    item.decision;
+
+
+                /*
+                    CALLER DIALOGUE
+                */
+
+                const question =
+                    document.createElement(
+                        'p'
+                    );
+
+                question.classList.add(
+                    'decision-question'
+                );
+
+                question.textContent =
+                    '"' +
+                    item.caller +
+                    '"';
+
+
+                /*
+                    SAFETY RATING
+                */
+
+                const ratingText =
+                    document.createElement(
+                        'p'
+                    );
+
+                const ratingStrong =
+                    document.createElement(
+                        'strong'
+                    );
+
+                ratingStrong.textContent =
+                    description;
+
+                ratingText.appendChild(
+                    ratingStrong
+                );
+
+
+                /*
+                    USER RESPONSE
+                */
+
+                const response =
+                    document.createElement(
+                        'p'
+                    );
+
+                const responseLabel =
+                    document.createElement(
+                        'strong'
+                    );
+
+                responseLabel.textContent =
+                    'You chose: ';
+
+                response.appendChild(
+                    responseLabel
+                );
+
+                response.appendChild(
+                    document.createTextNode(
+                        '"' +
+                        item.response +
+                        '"'
+                    )
+                );
+
+
+                /*
+                    COACH FEEDBACK
+                */
+
+                const feedback =
+                    document.createElement(
+                        'p'
+                    );
+
+                const feedbackLabel =
+                    document.createElement(
+                        'strong'
+                    );
+
+                feedbackLabel.textContent =
+                    'Why: ';
+
+                feedback.appendChild(
+                    feedbackLabel
+                );
+
+                feedback.appendChild(
+                    document.createTextNode(
+                        item.feedback
+                    )
+                );
+
+
+                /*
+                    ADD CONTENT TO CARD
+                */
+
+                decisionItem.appendChild(
+                    heading
+                );
+
+                decisionItem.appendChild(
+                    question
+                );
+
+                decisionItem.appendChild(
+                    ratingText
+                );
+
+                decisionItem.appendChild(
+                    response
+                );
+
+                decisionItem.appendChild(
+                    feedback
+                );
+
+
+                breakdown.appendChild(
+                    decisionItem
+                );
+
+            }
+        );
+
+
+        /*
+            REFLECTION
+        */
+
+        document.getElementById(
+            'reflection-summary'
+        ).textContent =
+            result.reflectionSummary;
+
+
+        /*
+            STRENGTH FEEDBACK
+        */
+
+        document.getElementById(
+            'strength-feedback'
+        ).textContent =
+            result.strengthFeedback;
+
+
+        /*
+            IMPROVEMENT FEEDBACK
+        */
+
+        document.getElementById(
+            'improvement-feedback'
+        ).textContent =
+            result.improvementFeedback;
+
+
+        /*
+            WARNING SIGNS
+        */
+
+        document.getElementById(
+            'warning-signs'
+        ).innerHTML =
+            result.warningSigns
+                .map(
+                    sign =>
+                        `<li>${sign}</li>`
+                )
+                .join('');
+
+
+        /*
+            REMINDERS
+        */
+
+        document.getElementById(
+            'reminders'
+        ).innerHTML =
+            result.reminders
+                .map(
+                    reminder =>
+                        `<li>${reminder}</li>`
+                )
+                .join('');
+
+
+        /*
+            FEEDBACK AUDIO
+        */
+
+        if (result.audioUrl) {
+
+            const audio =
+                new Audio(
+                    result.audioUrl
+                );
+
+            audio.play().catch(
+                function(error) {
+
+                    console.warn(
+                        'Feedback audio could not autoplay:',
+                        error
+                    );
+
+                }
+            );
 
         }
 
     }
+    catch (error) {
+
+        console.error(
+            'Results error:',
+            error
+        );
 
 
-    feedback.appendChild(
-        document.createTextNode(
-            feedbackText
-        )
-    );
+        document.getElementById(
+            'feedback-intro'
+        ).textContent =
+            'Unable to load your results. Please try again.';
 
 
-    /*
-        ADD EVERYTHING TO THE RESULT CARD
-    */
+        document.getElementById(
+            'overall-result'
+        ).textContent =
+            'Your results could not be loaded.';
 
-    decisionItem.appendChild(
-        heading
-    );
-
-    decisionItem.appendChild(
-        question
-    );
-
-    decisionItem.appendChild(
-        ratingText
-    );
-
-    decisionItem.appendChild(
-        response
-    );
-
-    decisionItem.appendChild(
-        feedback
-    );
-
-    breakdown.appendChild(
-        decisionItem
-    );
-
-});
-
-
-/*
-    REFLECTION RESULT
-*/
-
-const reflectionSummary =
-    document.getElementById(
-        "reflection-summary"
-    );
-
-
-if (
-    reflectionAnswer === "YES"
-) {
-
-    reflectionSummary.textContent =
-        "You correctly identified the call as an AI impersonation scam.";
-
-}
-else if (
-    reflectionAnswer === "UNSURE"
-) {
-
-    reflectionSummary.textContent =
-        "You were unsure whether the caller was genuine. The call was an AI impersonation scam.";
-
-}
-else if (
-    reflectionAnswer === "NO"
-) {
-
-    reflectionSummary.textContent =
-        "You believed the caller was really your daughter. The call was actually an AI impersonation scam.";
-
-}
-else {
-
-    reflectionSummary.textContent =
-        "No reflection answer was recorded.";
+    }
 
 }
 
 
 /*
-    STRENGTH FEEDBACK
-*/
-
-const strengthFeedback =
-    document.getElementById(
-        "strength-feedback"
-    );
-
-
-if (
-    safeChoices >= 6
-) {
-
-    strengthFeedback.textContent =
-        "You frequently slowed the conversation down, questioned unusual requests and used verification strategies before taking action.";
-
-}
-else if (
-    safeChoices >= 3
-) {
-
-    strengthFeedback.textContent =
-        "You recognised several suspicious parts of the call and made some strong attempts to verify what was happening.";
-
-}
-else {
-
-    strengthFeedback.textContent =
-        "You made some safer choices during the call. Building a habit of independently verifying urgent requests will make these responses stronger.";
-
-}
-
-
-/*
-    IMPROVEMENT FEEDBACK
-*/
-
-const improvementFeedback =
-    document.getElementById(
-        "improvement-feedback"
-    );
-
-
-if (
-    unsafeChoices === 0
-) {
-
-    improvementFeedback.textContent =
-        "You avoided the highest-risk responses. Continue using independent verification whenever someone unexpectedly asks for money or personal information.";
-
-}
-else if (
-    unsafeChoices <= 2
-) {
-
-    improvementFeedback.textContent =
-        "At some points you were willing to trust the caller or continue following their instructions. Try to stop the interaction and verify the person independently before continuing.";
-
-}
-else {
-
-    improvementFeedback.textContent =
-        "Several responses allowed urgency, emotional pressure or familiarity to influence your decisions. In a real situation, stop before sending money and contact the person using details you already trust.";
-
-}
-
-
-/*
-    CLEAR RESULTS WHEN RESTARTING
+    CLEAR OLD FRONTEND RESULTS
+    WHEN RESTARTING OR
+    RETURNING HOME
 */
 
 function clearScenarioResults() {
 
     sessionStorage.removeItem(
-        "scenarioChoices"
+        'scenarioChoices'
     );
 
     sessionStorage.removeItem(
-        "reflectionAnswer"
+        'reflectionAnswer'
     );
 
     sessionStorage.removeItem(
-    "callStartTime"
+        'callStartTime'
     );
 
 }
+
+
+/*
+    LOAD RESULTS
+    AFTER PAGE LOAD
+*/
+
+document.addEventListener(
+    'DOMContentLoaded',
+    loadResults
+);
 
 </script>
 

@@ -27,6 +27,11 @@ async function apiRequest(action, data = {}) {
 
 async function startServerScenario() {
     try {
+
+        sessionStorage.removeItem(
+            "callStartTime"
+        );
+
         const result = await apiRequest('start', {
             scenarioId: 'scenario01'
         });

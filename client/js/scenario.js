@@ -1,5 +1,8 @@
 const API_URL = '/api/caller-turn.php';
 
+let currentDecision = 1;
+let currentCallerText = '';
+
 async function apiRequest(action, data = {}) {
     const params = new URLSearchParams({
         action: action,
@@ -27,6 +30,8 @@ async function startServerScenario() {
         const result = await apiRequest('start', {
             scenarioId: 'scenario01'
         });
+        
+        currentDecision = 1;
 
         displayTurn(result.turn);
 
@@ -44,22 +49,25 @@ async function startServerScenario() {
 
 
 function displayTurn(turn) {
-    const callerName = document.querySelector('.caller-name');
-    const callerNumber = document.querySelector('.caller-number');
+    console.log('API TURN:', turn);
+
     const callerMessage = document.querySelector('.caller-message');
-    const responseContainer = document.querySelector('.response-options');
-
-    if (callerName) {
-        callerName.textContent = turn.caller.name;
-    }
-
-    if (callerNumber) {
-        callerNumber.textContent = turn.caller.number;
-    }
+    const responseContainer = document.querySelector('.response-buttons');
+    const progress = document.querySelector('.progress');
 
     if (callerMessage) {
-        callerMessage.textContent = turn.text;
+        callerMessage.innerHTML = `
+            <strong>🔊 Caller:</strong>
+            <p>${turn.text}</p>
+        `;
+    
+        currentCallerText = turn.text;
     }
+   
+    if (progress) {
+        progress.textContent =
+            `Decision ${currentDecision} of 9`;
+    }      
 
     if (!responseContainer) {
         return;
@@ -89,21 +97,28 @@ async function submitResponse(responseId) {
             responseId: responseId
         });
 
-        const decision = getCurrentDecision();
-
         saveChoice(
-            decision,
+            currentDecision,
             result.rating,
             result.userText,
             result.coachFeedback,
-            result.nextTurn ? result.nextTurn.text : ''
+            currentCallerText
         );
 
         if (result.callEnded) {
+            const responseContainer = document.querySelector('.response-buttons');
+
+            if (responseContainer) {
+                responseContainer.innerHTML = '';
+                responseContainer.style.display = 'none';
+            }
+
             window.location.href = 'reflection.php';
             return;
         }
 
+        currentDecision++;
+        
         displayTurn(result.nextTurn);
 
     } catch (error) {
@@ -113,24 +128,6 @@ async function submitResponse(responseId) {
 }
 
 
-function getCurrentDecision() {
-    const progress = document.querySelector('.decision-progress');
-
-    if (!progress) {
-        return 1;
-    }
-
-    const match = progress.textContent.match(/Decision\s+(\d+)\s+of/i);
-
-    if (match) {
-        return Number(match[1]);
-    }
-
-    return 1;
-}
-
-
 document.addEventListener('DOMContentLoaded', () => {
-    startScenario();
     startServerScenario();
 });

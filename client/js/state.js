@@ -467,21 +467,19 @@ function initialiseCallTimer() {
 
 
 /*
-    Start the timer automatically only when a scenario is active.
+    Start the timer after the page loads.
 */
 
-if (document.querySelector(".call-timer")) {
-    if (document.readyState === "loading") {
+if (document.readyState === "loading") {
 
-        document.addEventListener(
-            "DOMContentLoaded",
-            initialiseCallTimer
-        );
+    document.addEventListener(
+        "DOMContentLoaded",
+        initialiseCallTimer
+    );
 
-    }
-    else {
+}
+else {
 
-        initialiseCallTimer();
+    initialiseCallTimer();
 
-    }
 }

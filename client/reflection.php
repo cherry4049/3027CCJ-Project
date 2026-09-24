@@ -169,6 +169,22 @@ async function loadReflectionQuestion() {
             'reflection-question'
         ).textContent = result.question;
 
+        if (result.audioUrl) {
+
+        const audio =
+            new Audio(result.audioUrl);
+
+        audio.play().catch(function(error) {
+
+            console.warn(
+                'Reflection question audio could not autoplay:',
+                error
+            );
+
+        });
+
+    }
+
     }
     catch (error) {
 

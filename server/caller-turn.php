@@ -3,12 +3,11 @@
 // The front end does not hold the branching or the correct answers. It
 // asks this file what happens next and shows the reply.
 
-
 require_once __DIR__ . '/scenario-engine.php';
 
 header('Content-Type: application/json');
 
-
+// Reads a value from the query string, or from a JSON body if there is one.
 function bts_param($name)
 {
     if (isset($_GET[$name])) {
@@ -69,12 +68,10 @@ try {
     }
 
     bts_send(['ok' => false, 'error' => 'Unknown action: ' . $action], 400);
-
 } catch (InvalidArgumentException $e) {
-    
+    // Bad input from the browser, such as an unknown response id.
     bts_send(['ok' => false, 'error' => $e->getMessage()], 400);
-
 } catch (Throwable $e) {
-    
+    // Anything else that went wrong on the server.
     bts_send(['ok' => false, 'error' => $e->getMessage()], 500);
 }

@@ -5,37 +5,92 @@
 
 ## Project Overview
 
-Beat the Scammer is an interactive training prototype designed to help older adults recognise and respond to AI voice impersonation scams.
+Beat the Scammer is an interactive training application designed to help older adults recognise and respond to AI voice impersonation scams.
 
-The prototype simulates a scam phone call using pre-recorded or mock audio. Users navigate the scenario using buttons, make decisions during the simulated call, follow different response paths and receive feedback and scam prevention advice.
+The user experiences a simulated scam phone call and makes decisions during the conversation. The application then provides feedback, reflection and practical prevention advice.
 
-The prototype is designed to demonstrate the core user journey without requiring live voice recognition technology. A future real-world version could use live voice interaction to make the simulated phone call more realistic.
+## User Experience
 
-## Project Objectives
+The application takes the user through a simulated scam call:
 
-The prototype aims to:
+```text
+Home  
+ ↓  
+Instructions  
+ ↓  
+Incoming Call  
+ ↓  
+Scenario / Conversation  
+ ↓
+User Response  
+ ↓
+Safe / Unsure/ Unsafe Response  
+ ↓
+Continue Scenario  
+ ↓
+Call Ends  
+ ↓
+Reflection  
+ ↓
+Feedback  
+ ↓
+AI Voice / Real Person  
+ ↓
+Explanation / Reveal  
+ ↓
+Prevention Tips  
+ ↓
+End
+```
 
-* Help users recognise common AI impersonation scam techniques.
-* Identify warning signs such as urgency and emotional manipulation.
-* Practise safer responses to suspicious callers.
-* Encourage users to verify caller identity before taking action.
-* Provide feedback that reinforces safer decision-making.
+During the call, the user responds to the simulated caller using the available choices. Different choices lead to safe or unsafe response paths before returning to the main scenario.
 
-## Technology
+After the call ends, the user provides feedback and completes a reflection activity. The reflection asks the user to identify whether the caller was an AI voice or a real person. The application then explains the result and provides practical scam prevention tips.
 
-The prototype is planned to use:
+The prototype uses pre-recorded caller audio rather than live voice recognition.
 
-* HTML
-* PHP
-* CSS
-* JavaScript
-* Pre-recorded or mock audio
-* Visual Studio Code
-* Git and GitHub
+## Features
 
-PHP will be used for the page structure and shared layouts. CSS will be used for styling, while JavaScript will manage client-side interaction and scenario state where required.
+* Simple button-based navigation
+* Simulated incoming scam call
+* Interactive conversation
+* Safe, unsure and unsafe response paths
+* Caller audio
+* Feedback after the call
+* AI voice / real person reflection
+* Explanation and reveal
+* Scam prevention tips
+* Mobile-first interface
 
-The final backend technology and audio implementation will be determined during development.
+## How to Run
+
+### Requirements
+
+* PHP 8.x or later
+* A modern web browser
+
+### Start the application
+
+Clone the repository and open the project directory:
+
+```
+git clone https://github.com/cherry4049/3027CCJ-Project.git
+cd 3027CCJ-Project
+```
+
+Start the PHP development server:
+
+```
+php -S localhost:8000 -t client
+```
+
+Then open:
+
+```
+http://localhost:8000
+```
+
+The application will open on the Home screen.
 
 ## Project Structure
 
@@ -44,12 +99,12 @@ The final backend technology and audio implementation will be determined during 
 │
 ├── client/
 │   ├── index.php
+│   ├── family-voice.php
 │   ├── instructions.php
 │   ├── incoming-call.php
 │   ├── scenario.php
-│   ├── feedback.php
 │   ├── reflection.php
-│   ├── prevention-tips.php
+│   ├── feedback.php 
 │   │
 │   ├── includes/
 │   │   ├── header.php
@@ -58,6 +113,11 @@ The final backend technology and audio implementation will be determined during 
 │   │
 │   ├── css/
 │   │   └── style.css
+│   │
+│   │  
+│   ├── api/
+│   │   └── caller-turn.php
+│   │
 │   │
 │   ├── js/
 │   │   ├── navigation.js
@@ -69,7 +129,9 @@ The final backend technology and audio implementation will be determined during 
 │       └── images/
 │
 ├── server/
-│   └── [backend files to be added]
+│   ├── caller-turn.php
+│   ├── scenario-config.php
+│   └── scenario-engine.php
 │
 ├── docs/
 │   ├── application-flow.md
@@ -79,89 +141,39 @@ The final backend technology and audio implementation will be determined during 
 └── .gitignore
 ```
 
-The `client` folder contains the user-facing application. The `server` folder is reserved for backend development. The backend structure will be updated once the backend technology and implementation approach have been confirmed.
+## Audio
 
-## Application Flow
+All audio used by the prototype is stored in:
 
-The planned user flow is:
-
-```text
-Home
-  ↓
-Instructions
-  ↓
-Incoming Scam Call
-  ↓
-Conversation
-  ↓
-User Response
-  ↓
-Safe / Unsafe Response Path
-  ↓
-Feedback
-  ↓
-Continue
-  ↓
-Reflection
-  ↓
-Prevention Tips
+```
+client/assets/audio/
 ```
 
-The exact number of decision points and branching paths may be adjusted during development.
+JavaScript controls audio playback during the simulated call.
 
-## Development Roles
+## Backend and API
 
-The project development responsibilities are currently divided as follows:
+The client communicates with the backend through the Client API Bridge:
 
-**Jorja Telford**
+```text
+JavaScript  
+    ↓  
+client/api/caller-turn.php  
+    ↓  
+server/
+```
 
-* Front-end implementation
-* PHP page development
-* HTML/CSS implementation
-* Interface styling and user interaction
+The API bridge forwards requests to the backend and returns the response to JavaScript. JavaScript uses the returned data to update the interface and control the scenario.
 
-**Luke Sloan**
+## Documentation
 
-* Backend implementation
-* Backend technology selection
-* Audio-related backend functionality
+Additional project documentation is available in the docs/ directory:
 
-**Yuehui (Cherry) Chen**
-
-* Front-end and backend integration
-* File and project structure
-* File skeleton and project setup
-* Application flow and system architecture diagrams
-* Development documentation
-* Git and GitHub management
-
-Responsibilities may be adjusted during development if required to maintain a balanced workload.
-
-## Development Status
-
-### Current Progress
-
-* Low-fidelity prototype completed and updated for button-based navigation.
-* Application flow planned.
-* Technology stack identified.
-* Initial project structure created.
-* Development responsibilities allocated.
-* GitHub repository established.
-* Front-end and server folders prepared.
-
-### Next Steps
-
-* Finalise the application flow and scenario.
-* Complete the initial front-end implementation.
-* Determine the backend approach.
-* Implement and connect backend functionality.
-* Add simulated audio.
-* Test navigation, branching and application functionality.
-* Refine the prototype.
-* Prepare the final presentation and report.
+```
+Application Flow
+System Architecture
+```
 
 ## Repository
 
-This repository contains the development files for the **Beat the Scammer** prototype for 3027CCJ ICT & The Justice System.
-
-The project will be updated throughout the development process.
+[GitHub Repository](https://github.com/cherry4049/3027CCJ-Project)

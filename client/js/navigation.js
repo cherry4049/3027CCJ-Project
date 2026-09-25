@@ -247,6 +247,21 @@ if (handle && track) {
                 event.pointerId
             );
 
+            /*
+                Stop the incoming call ringing
+                before moving to the scenario screen.
+            */
+        
+            if (
+                typeof ringingAudio !== "undefined" &&
+                ringingAudio
+            ) {
+        
+                ringingAudio.pause();
+        
+                ringingAudio.currentTime = 0;
+        
+            }
 
             /*
                 Move to the scenario screen.

@@ -138,6 +138,8 @@ include 'includes/header.php';
 
 const REFLECTION_API = '/api/caller-turn.php';
 
+let loadReflectionQuestionAudio = null;
+
 
 /*
     LOAD REFLECTION QUESTION
@@ -169,22 +171,23 @@ async function loadReflectionQuestion() {
             'reflection-question'
         ).textContent = result.question;
 
+        /*
+            Play the coach's reflection question audio
+            automatically when the page loads.
+        */
+
         if (result.audioUrl) {
 
-        const audio =
-            new Audio(result.audioUrl);
-
-        audio.play().catch(function(error) {
-
-            console.warn(
-                'Reflection question audio could not autoplay:',
-                error
-            );
-
-        });
-
-    }
-
+            reflectionQuestionAudio =
+                new Audio(result.audioUrl);
+            
+            reflectionQuestionAudio.play().catch(function(error) {
+                console.warn(
+                    'Reflection question audio could not autoplay:',
+                    error
+                );
+            });
+        }
     }
     catch (error) {
 
@@ -238,6 +241,18 @@ async function submitReflection(optionId) {
 
         options.style.display = 'none';
 
+        /*
+            Stop the reflection question audio
+            when the user selects a response.
+        */
+
+        if (reflectionQuestionAudio) {
+
+            reflectionQuestionAudio.pause();
+
+            reflectionQuestionAudio.currentTime = 0;
+
+        }
 
         const response = await fetch(
             `${REFLECTION_API}?action=reflect&optionId=${encodeURIComponent(optionId)}`

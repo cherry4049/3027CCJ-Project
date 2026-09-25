@@ -98,8 +98,63 @@ include 'includes/header.php';
 
     </div>
 
-
 </section>
+
+<script>
+const HOME_API = '/api/caller-turn.php';
+
+async function loadHomeAudio() {
+    try {
+        const response = await fetch(
+            `${HOME_API}?action=intro&page=home`
+        );
+        
+        if (!response.ok) {
+            throw new Error(
+                `Server returned ${response.status}`
+            );
+        }
+
+        const result = await response.json();
+
+        if (!result.ok) {
+            throw new Error(
+                result.error || 'Unable to load home audio.'
+            );
+        }
+
+        if (
+            result.narration &&
+            result.narration.home &&
+            result.narration.home.audioUrl
+        ){
+            const audio =
+                new Audio(
+                    result.narration.home.audioUrl
+                );
+
+            audio.play().catch(function(error) {
+                console.warn(
+                    'Home audio could not autoplay:',
+                    error
+                );
+            });
+        }
+    }
+    catch (error) {
+        console.error(
+            'Home audio error:',
+            error
+        );
+    }
+}
+
+document.addEventListener(
+    'DOMContentLoaded',
+    loadHomeAudio
+);
+
+</script>
 
 
 <?php

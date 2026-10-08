@@ -172,7 +172,14 @@ include 'includes/header.php';
     <!-- BOTTOM BUTTONS -->
 
     <div class="non-call-buttons">
-
+        
+ <a
+            href="#"
+            class="call-continue-button"
+        >
+            Download Results
+        </a>
+        
         <a
             href="incoming-call.php"
             class="call-continue-button"

@@ -29,6 +29,13 @@ include 'includes/header.php';
 
                 <div class="coach-text">
 
+                    <button
+                        type="button"
+                        class="audio-replay-button"
+                        id="feedback-audio-button"
+                        aria-label="Replay feedback audio"
+                    >▶</button>
+
                     <strong>
                         Coach:
                     </strong>
@@ -172,14 +179,14 @@ include 'includes/header.php';
     <!-- BOTTOM BUTTONS -->
 
     <div class="non-call-buttons">
-        
- <a
+
+        <a
             href="#"
             class="call-continue-button"
         >
             Download Results
         </a>
-        
+
         <a
             href="incoming-call.php"
             class="call-continue-button"
@@ -205,6 +212,8 @@ include 'includes/header.php';
 
 const RESULTS_API =
     '/api/caller-turn.php';
+
+let feedbackAudio = null;
 
 
 /*
@@ -582,12 +591,18 @@ async function loadResults() {
 
         if (result.audioUrl) {
 
-            const audio =
+            feedbackAudio =
                 new Audio(
                     result.audioUrl
                 );
 
-            audio.play().catch(
+
+            /*
+                Play automatically when
+                the results page loads.
+            */
+
+            feedbackAudio.play().catch(
                 function(error) {
 
                     console.warn(
@@ -597,6 +612,47 @@ async function loadResults() {
 
                 }
             );
+
+
+            /*
+                Replay the feedback audio
+                from the beginning.
+            */
+
+            const feedbackAudioButton =
+                document.getElementById(
+                    'feedback-audio-button'
+                );
+
+            if (feedbackAudioButton) {
+
+                feedbackAudioButton.addEventListener(
+                    'click',
+                    function() {
+
+                        if (!feedbackAudio) {
+                            return;
+                        }
+
+                        feedbackAudio.pause();
+
+                        feedbackAudio.currentTime = 0;
+
+                        feedbackAudio.play().catch(
+                            function(error) {
+
+                                console.warn(
+                                    'Feedback audio could not replay:',
+                                    error
+                                );
+
+                            }
+                        );
+
+                    }
+                );
+
+            }
 
         }
 

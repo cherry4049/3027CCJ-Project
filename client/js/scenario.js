@@ -98,6 +98,35 @@ function playCallerAudio(audioUrl) {
 
 }
 
+/*
+    REPLAY CURRENT CALLER AUDIO
+
+    Stops the current caller audio and
+    starts the same clip again from
+    the beginning.
+*/
+function replayCallerAudio() {
+
+    if (!callerAudio) {
+        return;
+    }
+
+    callerAudio.pause();
+
+    callerAudio.currentTime = 0;
+
+    callerAudio.play()
+        .catch(function(error) {
+
+            console.warn(
+                'Caller audio could not replay:',
+                error
+            );
+
+        });
+
+}
+
 
 /*
     START SERVER SCENARIO
@@ -145,11 +174,20 @@ function displayTurn(turn) {
         Display caller message.
     */
     if (callerMessage) {
+
         callerMessage.innerHTML = `
-            <strong>🔊 Caller:</strong>
+            <button
+                type="button"
+                class="audio-replay-button"
+                aria-label="Replay caller audio"
+                onclick="replayCallerAudio()"
+            >▶</button>
+
+            <strong>Caller:</strong>
+
             <p>${turn.text}</p>
         `;
-    
+
         currentCallerText = turn.text;
     }
    

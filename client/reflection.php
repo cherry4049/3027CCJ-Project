@@ -36,6 +36,13 @@ include 'includes/header.php';
 
             <div class="coach-text">
 
+                <button
+                    type="button"
+                    class="audio-replay-button"
+                    id="reflection-question-audio-button"
+                    aria-label="Replay reflection question"
+                >▶</button>
+
                 <strong>
                     Coach:
                 </strong>
@@ -103,6 +110,14 @@ include 'includes/header.php';
 
             <div class="coach-text">
 
+                <button
+                    type="button"
+                    class="audio-replay-button"
+                    id="reflection-result-audio-button"
+                    aria-label="Replay reflection feedback"
+                    style="display: none;"
+                >▶</button>
+
                 <strong>
                     Coach:
                 </strong>
@@ -138,7 +153,34 @@ include 'includes/header.php';
 
 const REFLECTION_API = '/api/caller-turn.php';
 
-let loadReflectionQuestionAudio = null;
+let reflectionQuestionAudio = null;
+let reflectionResultAudio = null;
+
+
+/*
+    STOP ALL REFLECTION AUDIO
+*/
+
+function stopReflectionAudio() {
+
+    if (reflectionQuestionAudio) {
+
+        reflectionQuestionAudio.pause();
+
+        reflectionQuestionAudio.currentTime = 0;
+
+    }
+
+
+    if (reflectionResultAudio) {
+
+        reflectionResultAudio.pause();
+
+        reflectionResultAudio.currentTime = 0;
+
+    }
+
+}
 
 
 /*
@@ -149,45 +191,67 @@ async function loadReflectionQuestion() {
 
     try {
 
-        const response = await fetch(
-            `${REFLECTION_API}?action=reflection`
-        );
+        const response =
+            await fetch(
+                `${REFLECTION_API}?action=reflection`
+            );
+
 
         if (!response.ok) {
+
             throw new Error(
                 `Server returned ${response.status}`
             );
+
         }
 
-        const result = await response.json();
+
+        const result =
+            await response.json();
+
 
         if (!result.ok) {
+
             throw new Error(
-                result.error || 'Unable to load reflection.'
+                result.error ||
+                'Unable to load reflection.'
             );
+
         }
+
 
         document.getElementById(
             'reflection-question'
-        ).textContent = result.question;
+        ).textContent =
+            result.question;
+
 
         /*
-            Play the coach's reflection question audio
+            Play the coach's reflection question
             automatically when the page loads.
         */
 
         if (result.audioUrl) {
 
             reflectionQuestionAudio =
-                new Audio(result.audioUrl);
-            
-            reflectionQuestionAudio.play().catch(function(error) {
-                console.warn(
-                    'Reflection question audio could not autoplay:',
-                    error
+                new Audio(
+                    result.audioUrl
                 );
-            });
+
+
+            reflectionQuestionAudio.play().catch(
+                function(error) {
+
+                    console.warn(
+                        'Reflection question audio could not autoplay:',
+                        error
+                    );
+
+                }
+            );
+
         }
+
     }
     catch (error) {
 
@@ -196,12 +260,79 @@ async function loadReflectionQuestion() {
             error
         );
 
+
         document.getElementById(
             'reflection-question'
         ).textContent =
             'Let\'s reflect on the call. Do you think this caller could be an AI impersonation scam?';
 
     }
+
+}
+
+
+/*
+    REPLAY REFLECTION QUESTION AUDIO
+*/
+
+function replayReflectionQuestionAudio() {
+
+    if (!reflectionQuestionAudio) {
+        return;
+    }
+
+
+    /*
+        Stop any reflection audio
+        before replaying the question.
+    */
+
+    stopReflectionAudio();
+
+
+    reflectionQuestionAudio.play().catch(
+        function(error) {
+
+            console.warn(
+                'Reflection question audio could not replay:',
+                error
+            );
+
+        }
+    );
+
+}
+
+
+/*
+    REPLAY REFLECTION RESULT AUDIO
+*/
+
+function replayReflectionResultAudio() {
+
+    if (!reflectionResultAudio) {
+        return;
+    }
+
+
+    /*
+        Stop any reflection audio
+        before replaying the result.
+    */
+
+    stopReflectionAudio();
+
+
+    reflectionResultAudio.play().catch(
+        function(error) {
+
+            console.warn(
+                'Reflection result audio could not replay:',
+                error
+            );
+
+        }
+    );
 
 }
 
@@ -239,40 +370,44 @@ async function submitReflection(optionId) {
             Prevent multiple submissions.
         */
 
-        options.style.display = 'none';
+        options.style.display =
+            'none';
+
 
         /*
-            Stop the reflection question audio
-            when the user selects a response.
+            Stop all current reflection audio
+            before requesting the result.
         */
 
-        if (reflectionQuestionAudio) {
+        stopReflectionAudio();
 
-            reflectionQuestionAudio.pause();
 
-            reflectionQuestionAudio.currentTime = 0;
-
-        }
-
-        const response = await fetch(
-            `${REFLECTION_API}?action=reflect&optionId=${encodeURIComponent(optionId)}`
-        );
+        const response =
+            await fetch(
+                `${REFLECTION_API}?action=reflect&optionId=${encodeURIComponent(optionId)}`
+            );
 
 
         if (!response.ok) {
+
             throw new Error(
                 `Server returned ${response.status}`
             );
+
         }
 
 
-        const result = await response.json();
+        const result =
+            await response.json();
 
 
         if (!result.ok) {
+
             throw new Error(
-                result.error || 'Unable to submit reflection.'
+                result.error ||
+                'Unable to submit reflection.'
             );
+
         }
 
 
@@ -299,22 +434,59 @@ async function submitReflection(optionId) {
 
 
         /*
-            Play reflection audio if available.
+            Play reflection feedback audio
+            if available.
         */
 
         if (result.audioUrl) {
 
-            const audio =
-                new Audio(result.audioUrl);
+            /*
+                Stop any existing reflection
+                audio before creating the result audio.
+            */
 
-            audio.play().catch(function(error) {
+            stopReflectionAudio();
 
-                console.warn(
-                    'Reflection audio could not autoplay:',
-                    error
+
+            reflectionResultAudio =
+                new Audio(
+                    result.audioUrl
                 );
 
-            });
+
+            reflectionResultAudio.play().catch(
+                function(error) {
+
+                    console.warn(
+                        'Reflection audio could not autoplay:',
+                        error
+                    );
+
+                }
+            );
+
+
+            /*
+                Show the replay button beside
+                the Coach label.
+            */
+
+            const resultAudioButton =
+                document.getElementById(
+                    'reflection-result-audio-button'
+                );
+
+
+            if (resultAudioButton) {
+
+                resultAudioButton.style.display =
+                    'inline-block';
+
+
+                resultAudioButton.onclick =
+                    replayReflectionResultAudio;
+
+            }
 
         }
 
@@ -354,12 +526,37 @@ async function submitReflection(optionId) {
 
 
 /*
-    Load the question when the page opens.
+    PAGE LOADED
 */
 
 document.addEventListener(
     'DOMContentLoaded',
-    loadReflectionQuestion
+    function() {
+
+        loadReflectionQuestion();
+
+
+        /*
+            Connect the replay button for
+            the reflection question.
+        */
+
+        const questionAudioButton =
+            document.getElementById(
+                'reflection-question-audio-button'
+            );
+
+
+        if (questionAudioButton) {
+
+            questionAudioButton.addEventListener(
+                'click',
+                replayReflectionQuestionAudio
+            );
+
+        }
+
+    }
 );
 
 </script>

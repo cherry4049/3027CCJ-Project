@@ -27,7 +27,16 @@ include 'includes/header.php';
 
         <div class="coach-text">
 
-            <strong>🔊</strong>
+            <button
+                type="button"
+                class="audio-replay-button"
+                id="instructions-audio-button"
+                aria-label="Replay instructions audio"
+            >▶</button>
+
+            <strong>
+                Coach:
+            </strong>
 
             "Before we begin, I will explain
             how this training works..."
@@ -35,17 +44,6 @@ include 'includes/header.php';
         </div>
 
     </div>
-
-
-    <!-- AUDIO -->
-
-    <a
-        href="#"
-        class="audio-link"
-        id="listen-instructions"
-    >
-        ▶ Listen to instructions
-    </a>
 
 
     <hr>
@@ -147,151 +145,240 @@ include 'includes/header.php';
 
 </section>
 
+
 <script>
+
 const INSTRUCTION_API =
     '/api/caller-turn.php';
 
-let instructionsAudio = null; 
+let instructionsAudio = null;
 
-//Load the instructions audio
+
+/*
+    LOAD INSTRUCTIONS AUDIO
+*/
+
 async function loadInstructionsAudio() {
 
-    // Use the existing Audio object if already loaded.
+    /*
+        Use the existing Audio object
+        if it has already been loaded.
+    */
+
     if (instructionsAudio) {
         return instructionsAudio;
     }
 
+
     try {
-        const response = await fetch(
-            `${INSTRUCTION_API}?action=intro&page=instructions`            
-        );
+
+        const response =
+            await fetch(
+                `${INSTRUCTION_API}?action=intro&page=instructions`
+            );
+
 
         if (!response.ok) {
+
             throw new Error(
                 `Server returned ${response.status}`
             );
+
         }
+
 
         const result =
             await response.json();
-        
+
+
         if (!result.ok) {
+
             throw new Error(
                 result.error ||
                 'Unable to load instructions audio.'
             );
+
         }
+
 
         const audioUrl =
             result.narration &&
             result.narration.instructions &&
             result.narration.instructions.audioUrl;
-        
+
+
         if (!audioUrl) {
+
             throw new Error(
                 'Instructions audio URL was not returned.'
             );
+
         }
+
 
         instructionsAudio =
             new Audio(audioUrl);
 
+
         return instructionsAudio;
+
     }
     catch (error) {
+
         console.error(
             'Instructions audio error:',
             error
         );
 
-    return null;
+        return null;
+
     }
+
 }
 
-// Play the instructions audio if it is not already playing. 
+
+/*
+    PLAY INSTRUCTIONS AUDIO
+*/
+
 async function playInstructionsAudio() {
+
     const audio =
         await loadInstructionsAudio();
+
 
     if (!audio) {
         return;
     }
 
-    // do nothing if the audio is already playing.
-    if (!audio.paused && !audio.ended) {
-        return;
-    }
+
+    /*
+        Stop the current audio and
+        restart from the beginning.
+    */
+
+    audio.pause();
+
+    audio.currentTime = 0;
+
 
     try {
+
         await audio.play();
+
     }
     catch (error) {
+
         console.warn(
-            'Instructions audio could not autoplay:',
+            'Instructions audio could not play:',
             error
         );
+
     }
+
 }
 
-// page loaded.
+
+/*
+    PAGE LOADED
+*/
+
 document.addEventListener(
     'DOMContentLoaded',
     function() {
-        const listenButton =
+
+        const audioButton =
             document.getElementById(
-                'listen-instructions'
+                'instructions-audio-button'
             );
 
-        // try to autoplay when the page first loads.
+
+        /*
+            Try to autoplay when the page
+            first loads.
+        */
+
         playInstructionsAudio();
 
-        // if the browser blocked autoplay, start audio on the first user interaction with the page.
-        const startAfterInteraction = function() {
-            playInstructionsAudio();
-            
-            document.removeEventListener(
-                'click',
-                startAfterInteraction
-            );
-            
-            document.removeEventListener(
-                'keydown',
-                startAfterInteraction
-            );
-            
-            document.removeEventListener(
-                'touchstart',
-                startAfterInteraction
-            );
-        };
+
+        /*
+            If the browser blocked autoplay,
+            start audio on the first user
+            interaction with the page.
+        */
+
+        const startAfterInteraction =
+            function() {
+
+                /*
+                    Only start the audio if it
+                    is currently paused.
+                */
+
+                if (
+                    instructionsAudio &&
+                    instructionsAudio.paused
+                ) {
+
+                    instructionsAudio.play()
+                        .catch(function() {});
+
+                }
+
+
+                document.removeEventListener(
+                    'click',
+                    startAfterInteraction
+                );
+
+                document.removeEventListener(
+                    'keydown',
+                    startAfterInteraction
+                );
+
+                document.removeEventListener(
+                    'touchstart',
+                    startAfterInteraction
+                );
+
+            };
+
 
         document.addEventListener(
             'click',
             startAfterInteraction
         );
-        
+
         document.addEventListener(
             'keydown',
             startAfterInteraction
         );
-        
+
         document.addEventListener(
             'touchstart',
             startAfterInteraction
         );
 
-        // if the user clicks "▶ Listen to instructions" link,
-        // play only if audio is not already playing.            
-        if (listenButton) {
-            listenButton.addEventListener(
+
+        /*
+            Replay instructions audio from
+            the beginning when the user
+            presses the ▶ button.
+        */
+
+        if (audioButton) {
+
+            audioButton.addEventListener(
                 'click',
-                function(event) {
-                    event.preventDefault();
-                
-                playInstructionsAudio();
+                function() {
+
+                    playInstructionsAudio();
+
                 }
             );
+
         }
+
     }
 );
 

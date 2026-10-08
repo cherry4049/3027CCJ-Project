@@ -49,6 +49,13 @@ include 'includes/header.php';
 
         <div class="coach-text">
 
+            <button
+                type="button"
+                class="audio-replay-button"
+                id="home-audio-button"
+                aria-label="Replay coach introduction"
+            >▶</button>
+
             "Welcome! I will help you practise
             recognising scam calls safely."
 
@@ -58,12 +65,13 @@ include 'includes/header.php';
 
 
     <!-- START TRAINING-->
+
     <div class="non-call-buttons">
 
         <!--
             Takes the user to the Instructions screen.
         -->
-        
+
         <a
             href="instructions.php"
             class="button primary-button"
@@ -85,14 +93,14 @@ include 'includes/header.php';
             later if required.
         -->
 
-    <a
-        href="family-voice.php"
-        class="button secondary-button"
-    >
+        <a
+            href="family-voice.php"
+            class="button secondary-button"
+        >
 
             <span class="button-icon">ⓘ</span>
 
-        Family Voice Training 
+            Family Voice Training
 
         </a>
 
@@ -100,58 +108,180 @@ include 'includes/header.php';
 
 </section>
 
+
 <script>
+
 const HOME_API = '/api/caller-turn.php';
 
+let homeAudio = null;
+
+
+/*
+    LOAD HOME AUDIO
+*/
+
 async function loadHomeAudio() {
+
+    if (homeAudio) {
+        return homeAudio;
+    }
+
     try {
-        const response = await fetch(
-            `${HOME_API}?action=intro&page=home`
-        );
-        
+
+        const response =
+            await fetch(
+                `${HOME_API}?action=intro&page=home`
+            );
+
         if (!response.ok) {
+
             throw new Error(
                 `Server returned ${response.status}`
             );
+
         }
 
-        const result = await response.json();
+        const result =
+            await response.json();
+
 
         if (!result.ok) {
+
             throw new Error(
-                result.error || 'Unable to load home audio.'
+                result.error ||
+                'Unable to load home audio.'
             );
+
         }
+
 
         if (
             result.narration &&
             result.narration.home &&
             result.narration.home.audioUrl
-        ){
-            const audio =
+        ) {
+
+            homeAudio =
                 new Audio(
                     result.narration.home.audioUrl
                 );
 
-            audio.play().catch(function(error) {
-                console.warn(
-                    'Home audio could not autoplay:',
-                    error
-                );
-            });
+            return homeAudio;
+
         }
+
+
+        throw new Error(
+            'Home audio URL was not returned.'
+        );
+
     }
     catch (error) {
+
         console.error(
             'Home audio error:',
             error
         );
+
+        return null;
+
     }
+
 }
+
+
+/*
+    PLAY HOME AUDIO
+*/
+
+async function playHomeAudio() {
+
+    const audio =
+        await loadHomeAudio();
+
+
+    if (!audio) {
+        return;
+    }
+
+
+    /*
+        Stop the current audio
+        and restart from the beginning.
+    */
+
+    audio.pause();
+
+    audio.currentTime = 0;
+
+
+    audio.play().catch(
+        function(error) {
+
+            console.warn(
+                'Home audio could not play:',
+                error
+            );
+
+        }
+    );
+
+}
+
+
+/*
+    PAGE LOADED
+*/
 
 document.addEventListener(
     'DOMContentLoaded',
-    loadHomeAudio
+    async function() {
+
+        const audioButton =
+            document.getElementById(
+                'home-audio-button'
+            );
+
+
+        /*
+            Keep automatic audio playback.
+        */
+
+        const audio =
+            await loadHomeAudio();
+
+
+        if (audio) {
+
+            audio.play().catch(
+                function(error) {
+
+                    console.warn(
+                        'Home audio could not autoplay:',
+                        error
+                    );
+
+                }
+            );
+
+        }
+
+
+        /*
+            Replay audio from the beginning
+            when the user presses ▶.
+        */
+
+        if (audioButton) {
+
+            audioButton.addEventListener(
+                'click',
+                playHomeAudio
+            );
+
+        }
+
+    }
 );
 
 </script>

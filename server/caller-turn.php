@@ -1,6 +1,7 @@
 <?php
 // Serves the training call one turn at a time.
-
+// The front end does not hold the branching or the correct answers. It
+// asks this file what happens next and shows the reply.
 
 require_once __DIR__ . '/scenario-engine.php';
 
@@ -68,7 +69,9 @@ try {
 
     bts_send(['ok' => false, 'error' => 'Unknown action: ' . $action], 400);
 } catch (InvalidArgumentException $e) {
+    // Bad input from the browser, such as an unknown response id.
     bts_send(['ok' => false, 'error' => $e->getMessage()], 400);
 } catch (Throwable $e) {
+    // Anything else that went wrong on the server.
     bts_send(['ok' => false, 'error' => $e->getMessage()], 500);
 }

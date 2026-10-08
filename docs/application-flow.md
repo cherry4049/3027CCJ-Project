@@ -34,21 +34,21 @@ The selected response leads to the corresponding response path. The application 
 
 After the final decision, the simulated call ends and the user proceeds to the feedback and reflection activities.
 
-**Feedback**
-
-The application provides feedback about the user's responses and explains relevant aspects of the scam scenario.
-
 **Reflection**
 
-The user is asked to consider whether the caller could be an AI impersonation scam. The reflection question is presented with three response options.
+The user is asked to consider whether the caller could be an AI impersonation scam. The reflection question is presented with three response options:
 
-**Yes / Not Sure / No**
+`Yes / Not Sure / No`
 
 The user selects **Yes**, **Not sure**, or **No** to indicate whether they think the caller was an AI impersonation scam. Each selection produces corresponding feedback and audio.
 
 **Explanation / Reveal**
 
 The application reveals that the caller was an AI impersonation scam and explains the correct answer. It highlights relevant signs or behaviours that the user should consider in a similar situation.
+
+**Feedback**
+
+The application provides feedback about the user's responses and explains relevant aspects of the scam scenario.
 
 **Prevention Tips**
 
